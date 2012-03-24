@@ -1,7 +1,8 @@
 package algorithms;
 
-import java.util.ArrayList;
 import general.DataObj;
+
+import java.util.ArrayList;
 
 public class RNN {
 	

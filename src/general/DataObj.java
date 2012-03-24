@@ -11,7 +11,17 @@ public class DataObj {
 	public final String[] colNames;
 	public final int colCount;
 	public final int rowCount;
+
+	// generate object form existing data
+	public DataObj(double[][] matrix, String[] rowNames, String[] colNames) {
+		this.values = matrix;
+		this.rowNames = rowNames;
+		this.colNames = colNames;
+		this.rowCount = rowNames.length;
+		this.colCount = colNames.length;
+	}
 	
+	// generate object from file
 	public DataObj(String filename) {
 		double[][] matrix = null;
 		String[] rowNames = null;

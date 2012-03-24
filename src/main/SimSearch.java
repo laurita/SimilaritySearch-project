@@ -1,16 +1,49 @@
 package main;
 
+import general.Analyzer;
+import general.DataObj;
+import general.MatrixGenerator;
+import general.Timer;
+
 import java.util.ArrayList;
 
 import algorithms.RNN;
-import general.Analyzer;
-import general.DataObj;
-import general.Printer;
-import general.Timer;
 
 public class SimSearch {
 
-	public static void main(String[] args) {
+	public static void runtimetest() {
+		
+		System.out.println("Testing runtime.");
+		int[] testsizes = new int[]{10,100,1000,2500,5000};
+		Timer timer = new Timer();
+		
+		
+		for (int i = 0; i < testsizes.length; i++) {
+			System.out.println("Testing for size " + String.valueOf(testsizes[i]) + ".");
+			System.out.print("Generating matrix...");
+			DataObj matrix = MatrixGenerator.generate(testsizes[i], testsizes[i]);
+			System.out.println("ok");
+			System.out.println("Running algorithms:");
+			
+			// running algorithm 1
+			timer.startfresh();
+			RNN.matchAll(matrix);
+			timer.stop();
+			System.out.println("RNN took " + timer.getTime() + " ms.");
+			
+			// running algorithm 2
+			// ...
+			
+			// running algorithm 3
+			// ...
+			
+			// running algorithm 4
+			// ...
+			
+		}
+	}
+	
+	public static void qualitytest() {
 		// the files to test on
 		//String[] data = new String[] {"testmatrix.txt"};
 		String[] data = new String[] {"Np3q2.dm", "Nw3p2q.dm", "Nw5p1q.dm", "Nw8p2q.dm"};
@@ -26,7 +59,7 @@ public class SimSearch {
 			
 			// loading the data
 			System.out.print("Loading data... ");
-			timer.start();
+			timer.startfresh();
 			DataObj matrix = new DataObj(filename);
 			timer.stop();
 			System.out.println("ok");
@@ -42,8 +75,7 @@ public class SimSearch {
 			
 			// calculating algorithm 1
 			// (reverse nearest neighbor)
-			timer.reset();
-			timer.start();
+			timer.startfresh();
 			ArrayList<int[]> result = RNN.matchAll(matrix);
 			result = RNN.matchAll(matrix);
 			timer.stop();
@@ -72,7 +104,11 @@ public class SimSearch {
 			System.out.println("----------------");
 			System.out.println();
 		}
-		
+	}
+	
+	public static void main(String[] args) {
+		runtimetest();
+		qualitytest();
 	}
 
 }

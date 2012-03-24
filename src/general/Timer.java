@@ -7,6 +7,12 @@ public class Timer {
 	public Timer() {}
 
 	// start the timer
+	public void startfresh() {
+		time = 0;
+		start = System.currentTimeMillis();
+	}
+	
+	// start the timer
 	public void start() {
 		start = System.currentTimeMillis();
 	}
