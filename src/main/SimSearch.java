@@ -3,7 +3,9 @@ package main;
 import java.util.ArrayList;
 
 import algorithms.RNN;
+import general.Analyzer;
 import general.DataObj;
+import general.Printer;
 import general.Timer;
 
 public class SimSearch {
@@ -12,6 +14,7 @@ public class SimSearch {
 		// the files to test on
 		//String[] data = new String[] {"testmatrix.txt"};
 		String[] data = new String[] {"Np3q2.dm", "Nw3p2q.dm", "Nw5p1q.dm", "Nw8p2q.dm"};
+		
 		// test for all the files
 		for (int i = 0; i < data.length; i++) {
 			// init for the run on this file
@@ -30,35 +33,29 @@ public class SimSearch {
 			System.out.println("Loading took " + timer.getTime() + " ms.");
 			
 			// test that the matrix is correctly loaded
-			/*System.out.print("  ");
-			for (int x = 0; x < matrix.colCount; x++) {
-				System.out.print(matrix.colNames[x] + " ");
-			}			
-			System.out.println();
-			for (int y = 0; y < matrix.colCount; y++) {
-				System.out.print(matrix.rowNames[y] + " ");
-				for (int x = 0; x < matrix.rowCount; x++) {
-					System.out.print(matrix.values[x][y] + " ");
-				}
-				System.out.println();
-			}*/
+			//Printer.printMatrix(matrix);
+			
+			// load the analyzer
+			Analyzer analyzer = new Analyzer(matrix);
 			
 			// running the algorithms
-			// calculate the reverse nearest neighbor
+			
+			// calculating algorithm 1
+			// (reverse nearest neighbor)
 			timer.reset();
 			timer.start();
 			ArrayList<int[]> result = RNN.matchAll(matrix);
+			result = RNN.matchAll(matrix);
 			timer.stop();
 			System.out.println("RNN took " + timer.getTime() + " ms.");
 			
+			// analyze the result
+			analyzer.analyze(result);
+			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
+			System.out.println("Prezision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
+			
 			// print the result
-			/*for (int j = 0, len = result.size(); j < len; j++) {
-				System.out.println(
-					matrix.rowNames[result.get(j)[0]] + " - " + 
-					matrix.rowNames[result.get(j)[1]] + " @ " + 
-					matrix.values[result.get(j)[0]][result.get(j)[1]]
-				);
-			}*/
+			//Printer.printResults(matrix, result);
 			
 			
 			// calculating algorithm 2
