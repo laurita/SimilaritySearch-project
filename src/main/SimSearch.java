@@ -84,7 +84,7 @@ public class SimSearch {
 			// analyze the result
 			analyzer.analyze(result);
 			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
-			System.out.println("Prezision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
+			System.out.println("Precision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
 			
 			// print the result
 			//Printer.printResults(matrix, result);
