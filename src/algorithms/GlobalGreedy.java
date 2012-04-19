@@ -27,7 +27,7 @@ public class GlobalGreedy {
 	        public int compare(Object o1, Object o2) {
 	        	Tuple p1 = (Tuple) o1;
 	            Tuple p2 = (Tuple) o2;
-	            return (int) (p1.distance - p2.distance);
+	            return (int) Math.signum(p1.distance - p2.distance);
 	        }
 	    });
 		boolean[] seen_row = new boolean[Alfa.length]; 
