@@ -40,7 +40,7 @@ public class Analyzer {
 		return count;
 	}
 	
-	// load the analzer with the initial matrix
+	// load the analyzer with the initial matrix
 	public Analyzer(DataObj matrix) {
 		relevantcount = getRelevant(matrix);
 		this.matrix = matrix;

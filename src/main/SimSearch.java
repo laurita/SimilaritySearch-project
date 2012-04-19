@@ -3,10 +3,12 @@ package main;
 import general.Analyzer;
 import general.DataObj;
 import general.MatrixGenerator;
+import general.Printer;
 import general.Timer;
 
 import java.util.ArrayList;
 
+import algorithms.GlobalGreedy;
 import algorithms.RNN;
 
 public class SimSearch {
@@ -14,7 +16,7 @@ public class SimSearch {
 	public static void runtimetest() {
 		
 		System.out.println("Testing runtime.");
-		int[] testsizes = new int[]{10,100,1000,2500,5000};
+		int[] testsizes = new int[]{10,100,1000};
 		Timer timer = new Timer();
 		
 		
@@ -32,7 +34,11 @@ public class SimSearch {
 			System.out.println("RNN took " + timer.getTime() + " ms.");
 			
 			// running algorithm 2
-			// ...
+			//*
+			GlobalGreedy.match(matrix);
+			timer.stop();
+			System.out.println("RNN took " + timer.getTime() + " ms.");
+			//*/
 			
 			// running algorithm 3
 			// ...
@@ -41,6 +47,7 @@ public class SimSearch {
 			// ...
 			
 		}
+		System.out.println();
 	}
 	
 	public static void qualitytest() {
