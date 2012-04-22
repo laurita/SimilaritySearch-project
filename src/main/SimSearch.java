@@ -61,6 +61,12 @@ public class SimSearch {
 			timer.stop();
 			System.out.println("Hung took " + timer.getTime() + " ms.");
 			
+			// running additional implementation
+			timer.startfresh();
+			HungarianAlgorithm.hgAlgorithm(matrix.values, "min");
+			timer.stop();
+			System.out.println("Hung took (test) " + timer.getTime() + " ms.");
+			
 		}
 		System.out.println();
 	}
@@ -219,8 +225,8 @@ public class SimSearch {
 	}
 	
 	public static void main(String[] args) {
-		//runtimetest();
-		qualitytest();
+		runtimetest();
+		//qualitytest();
 		/*for (int i = 0; i < 1; i++) {
 			HungTest();
 		}*/
