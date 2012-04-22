@@ -7,14 +7,16 @@ import general.Timer;
 
 import java.util.ArrayList;
 
+import algorithms.GlobalGreedy;
 import algorithms.RNN;
+import algorithms.StableMarriage;
 
 public class SimSearch {
 
 	public static void runtimetest() {
 		
 		System.out.println("Testing runtime.");
-		int[] testsizes = new int[]{10,100,1000,2500,5000};
+		int[] testsizes = new int[]{10,100,1000};
 		Timer timer = new Timer();
 		
 		
@@ -32,10 +34,16 @@ public class SimSearch {
 			System.out.println("RNN took " + timer.getTime() + " ms.");
 			
 			// running algorithm 2
-			// ...
+			timer.startfresh();
+			GlobalGreedy.match(matrix);
+			timer.stop();
+			System.out.println("Global Greedy took " + timer.getTime() + " ms.");
 			
 			// running algorithm 3
-			// ...
+			timer.startfresh();
+			StableMarriage.match(matrix);
+			timer.stop();
+			System.out.println("Stable Marriage took " + timer.getTime() + " ms.");
 			
 			// running algorithm 4
 			// ...
@@ -81,7 +89,7 @@ public class SimSearch {
 			timer.stop();
 			System.out.println("RNN took " + timer.getTime() + " ms.");
 			
-			// analyze the result
+			//analyze the result
 			analyzer.analyze(result);
 			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
 			System.out.println("Prezision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
@@ -91,11 +99,29 @@ public class SimSearch {
 			
 			
 			// calculating algorithm 2
-			// ...
+			timer.startfresh();
+			ArrayList<int[]> result1 = GlobalGreedy.match(matrix);
+			result1 = GlobalGreedy.match(matrix);
+			timer.stop();
+			System.out.println("Global Greedy took " + timer.getTime() + " ms.");
+			
+			// analyze the result
+			analyzer.analyze(result1);
+			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
+			System.out.println("Prezision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
 			
 			
 			// calculating algorithm 3
-			// ...
+			timer.startfresh();
+			ArrayList<int[]> result2 = StableMarriage.match(matrix);
+			result2 = StableMarriage.match(matrix);
+			timer.stop();
+			System.out.println("Stable Marriage took " + timer.getTime() + " ms.");
+			
+			// analyze the result
+			analyzer.analyze(result2);
+			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
+			System.out.println("Prezision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
 			
 			
 			// calculating algorithm 4
