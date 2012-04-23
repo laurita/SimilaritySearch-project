@@ -250,7 +250,7 @@ public class SimSearch {
 	public static void main(String[] args) {
 		runtimetest();
 		//qualitytest();
-		/*for (int i = 0; i < 1; i++) {
+		/*for (int i = 0; i < 100; i++) {
 			HungTest();
 		}*/
 	}
