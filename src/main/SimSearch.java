@@ -186,13 +186,15 @@ public class SimSearch {
 			}
 		}
 		
-		/*matrix = new double[][] {
+		/*
+		matrix = new double[][] {
 				{10,19,8,15},
 				{10,18,7,17},
 				{13,16,9,14},
 				{12,19,8,18},
 				{14,17,10,19}
-		};*/
+		};
+		//*/
 
 		// test on hungarian algorithm
 		//*
@@ -210,8 +212,8 @@ public class SimSearch {
 	}
 
 	public static void main(String[] args) {
-		 runtimetest();
-		// qualitytest();
+		// runtimetest();
+		 qualitytest();
 		/*
 		for (int i = 0; i < 100; i++) {
 			impltest(i);

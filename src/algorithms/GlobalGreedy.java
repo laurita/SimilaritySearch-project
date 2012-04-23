@@ -1,11 +1,12 @@
 package algorithms;
 
 import general.DataObj;
-import general.Tuple;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import algorithms.helper.Tuple;
 
 import util.ArrayTools;
 
