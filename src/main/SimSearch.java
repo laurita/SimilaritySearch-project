@@ -1,9 +1,9 @@
 package main;
 
+import external.HungarianAlgorithm;
 import general.Analyzer;
 import general.DataObj;
 import general.MatrixGenerator;
-import general.Printer;
 import general.Timer;
 
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import java.util.Random;
 
 import algorithms.GlobalGreedy;
 import algorithms.HungAlg;
-import algorithms.HungarianAlgorithm;
 import algorithms.RNN;
 import algorithms.StableMarriage;
 
