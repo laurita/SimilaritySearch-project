@@ -1,6 +1,11 @@
 package external;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+
+import util.MatrixTools;
 
 /**
  * An implementation of the stable marriage algorithm from Chapter 1-2 in
@@ -18,55 +23,61 @@ public class StableMarriage {
 	private int[][] womanPref;
 
 	private static final boolean DEBUGGING = false;
-	private Random rand = new Random();
-
-	/**
-	 * Creates and solves a random stable marriage problem of size n, where n is
-	 * given on the command line.
-	 */
-	public static void main(String[] args) {
-		if (args.length != 1) {
-			System.out.println("Usage: java StableMarriage n");
-			return;
+	
+	boolean transposed = false;
+	
+	// make row as preference
+	private int[] asPref(double[] row) {
+		int[] result = new int[row.length];
+		ArrayList<double[]> tmp = new ArrayList<double[]>();
+		for (int i = 0; i < row.length; i++) {
+			tmp.add(new double[]{i, row[i]});
 		}
-		int n = Integer.parseInt(args[0]);
-		StableMarriage sm = new StableMarriage(n);
-		if (n <= 10)
-			sm.printPrefTables();
-		int[] marriage = sm.stable();
-		if (n <= 10)
-			sm.printMarriage(marriage);
+		Collections.sort(tmp, new Comparator<Object>(){ 
+	        public int compare(Object o1, Object o2) {
+	        	double[] p1 = (double[]) o1;
+	        	double[] p2 = (double[]) o2;
+	            return (int) Math.signum(p1[1] - p2[1]);
+	        }
+	    });
+		for (int i = 0, len = tmp.size(); i < len; i++) {
+			result[i] = (int) (tmp.get(i)[0] + 1);
+		}
+		return result;
 	}
 
 	/**
-	 * Creates a marriage problem of size n with random preferences.
+	 * Creates a marriage problem
 	 */
-	public StableMarriage(int n) {
-		this.n = n;
-		manPref = new int[n][];
-		womanPref = new int[n][];
-		for (int i = 0; i < n; i++) {
-			manPref[i] = new int[n];
-			createRandomPrefs(manPref[i]);
-			womanPref[i] = new int[n];
-			createRandomPrefs(womanPref[i]);
+	public StableMarriage(double[][] matrix) {
+		if (matrix[0].length > matrix.length) {
+    		matrix = MatrixTools.transpose(matrix);
+    		transposed = true;
+    	}
+		
+		double[][] manPref;
+		double[][] womanPref;
+		
+		manPref = new double[matrix.length][];
+		womanPref = new double[matrix[0].length][matrix.length];
+		
+		this.manPref = new int[manPref.length][];
+		this.womanPref = new int[womanPref.length][];
+		
+		for (int i = 0; i < matrix.length; i++) {
+			manPref[i] = matrix[i];
 		}
-	}
-
-	/**
-	 * Puts the numbers 0 .. v.length - 1 in the vector v in random order.
-	 */
-	private void createRandomPrefs(int[] v) {
-		// Create a vector with the values 0, 1, 2, ...
-		for (int i = 0; i < v.length; i++)
-			v[i] = i;
-		// Create a random permutation of this vector.
-		for (int i = v.length - 1; i > 0; i--) {
-			// swap v[i] with a random element v[j], j <= i.
-			int j = rand.nextInt(i + 1);
-			int temp = v[i];
-			v[i] = v[j];
-			v[j] = temp;
+		for (int i = 0; i < matrix[0].length; i++) {
+			for (int j = 0; j < matrix.length; j++) {
+				womanPref[i][j] = matrix[j][i];
+			}
+		}
+		
+		for (int i = 0; i < manPref.length; i++) {
+			this.manPref[i] = asPref(manPref[i]); 
+		}
+		for (int i = 0; i < womanPref.length; i++) {
+			this.womanPref[i] = asPref(womanPref[i]); 
 		}
 	}
 
@@ -134,6 +145,7 @@ public class StableMarriage {
 		printMatrix(womanPref);
 	}
 
+	@SuppressWarnings("unused")
 	private void printMarriage(int[] m) {
 		System.out.println("Married couples (woman + man): ");
 		for (int i = 0; i < m.length; i++)

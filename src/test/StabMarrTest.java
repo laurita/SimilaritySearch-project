@@ -15,9 +15,25 @@ public class StabMarrTest {
 		// create result for our implementation
 		ArrayList<int[]> assignment1 = algorithms.StableMarriage.match(matrix);
 		// result for imported implementation
-		//ArrayList<int[]> assignment2 = external.StableMarriage.
+		ArrayList<int[]> assignment2 = new ArrayList<int[]>();
+		{
+			int[] tmp = new external.StableMarriage(matrix).stable();
+			// convert
+			for (int i = 0; i < tmp.length; i++) {
+				assignment2.add(new int[] { i, tmp[i] });
+			}
+		}
 		
-		// ...
+		// compare
+		if (assignment1.size() != assignment2.size()) {
+			System.out.println(assignment2.size());
+			result = false;
+		}
+		for (int i = 0; i < Math.min(assignment1.size(), assignment2.size()); i++) {
+			if (assignment1.get(i)[0] != assignment2.get(i)[0] || assignment1.get(i)[1] != assignment2.get(i)[1]) {
+				result = false;
+			}
+		}
 		
 		return result;
 	}

@@ -3,7 +3,6 @@ package algorithms;
 import java.util.ArrayList;
 
 import util.MatrixTools;
-import general.DataObj;
 
 public class StableMarriage {
 

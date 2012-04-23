@@ -38,7 +38,7 @@ public class HungAlgTest {
 				assignment2.add(new int[] { tmp[i][0], tmp[i][1] });
 			}
 		}
-
+		
 		// check for correctness
 		if (assignment1.size() != assignment2.size()
 				|| getScore(matrix, assignment1) != getScore(matrix,

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import test.HungAlgTest;
+import test.StabMarrTest;
 import algorithms.GlobalGreedy;
 import algorithms.HungAlg;
 import algorithms.RNN;
@@ -185,13 +186,21 @@ public class SimSearch {
 		if (!HungAlgTest.test(matrix)) {
 			System.out.println("Hungarian Algorithm failed... (" + number + ")");
 		}
+		
+		// test for stable marriage
+		if (!StabMarrTest.test(matrix)) {
+			System.out.println("Stable Marriage Algorithm failed... (" + number + ")");
+		}
+		
 	}
 
 	public static void main(String[] args) {
 		// runtimetest();
 		// qualitytest();
+		//*
 		for (int i = 0; i < 1; i++) {
 			impltest(i);
 		}
+		//*/
 	}
 }
