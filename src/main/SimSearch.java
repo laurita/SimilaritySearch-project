@@ -3,15 +3,27 @@ package main;
 import general.Analyzer;
 import general.DataObj;
 import general.MatrixGenerator;
+import general.Printer;
 import general.Timer;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import algorithms.GlobalGreedy;
+import algorithms.HungAlg;
+import algorithms.HungarianAlgorithm;
 import algorithms.RNN;
 import algorithms.StableMarriage;
 
 public class SimSearch {
+	
+	public static void printSum(double[][] matrix, ArrayList<int[]> result) {
+		double sum = 0;
+		for (int i = 0, len = result.size(); i < len; i++) {
+			sum += matrix[result.get(i)[0]][result.get(i)[0]];
+		}
+		System.out.println("Sum is: " + sum);
+	}
 
 	public static void runtimetest() {
 		
@@ -34,10 +46,13 @@ public class SimSearch {
 			System.out.println("RNN took " + timer.getTime() + " ms.");
 			
 			// running algorithm 2
+
+			//*
 			timer.startfresh();
 			GlobalGreedy.match(matrix);
 			timer.stop();
-			System.out.println("Global Greedy took " + timer.getTime() + " ms.");
+			System.out.println("GG took " + timer.getTime() + " ms.");
+			//*/
 			
 			// running algorithm 3
 			timer.startfresh();
@@ -46,9 +61,19 @@ public class SimSearch {
 			System.out.println("Stable Marriage took " + timer.getTime() + " ms.");
 			
 			// running algorithm 4
-			// ...
+			timer.startfresh();
+			new HungAlg(matrix.values).getMatches();
+			timer.stop();
+			System.out.println("Hung took " + timer.getTime() + " ms.");
+			
+			// running additional implementation
+			timer.startfresh();
+			HungarianAlgorithm.hgAlgorithm(matrix.values, "min");
+			timer.stop();
+			System.out.println("Hung took (test) " + timer.getTime() + " ms.");
 			
 		}
+		System.out.println();
 	}
 	
 	public static void qualitytest() {
@@ -78,13 +103,14 @@ public class SimSearch {
 			
 			// load the analyzer
 			Analyzer analyzer = new Analyzer(matrix);
+			ArrayList<int[]> result;
 			
 			// running the algorithms
 			
-			// calculating algorithm 1
-			// (reverse nearest neighbor)
+			// calculating algorithm 1 (reverse nearest neighbor)
+			/*
 			timer.startfresh();
-			ArrayList<int[]> result = RNN.matchAll(matrix);
+			result = RNN.matchAll(matrix);
 			result = RNN.matchAll(matrix);
 			timer.stop();
 			System.out.println("RNN took " + timer.getTime() + " ms.");
@@ -92,11 +118,11 @@ public class SimSearch {
 			//analyze the result
 			analyzer.analyze(result);
 			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
-			System.out.println("Prezision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
+			System.out.println("Precision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
 			
 			// print the result
 			//Printer.printResults(matrix, result);
-			
+			//*/
 			
 			// calculating algorithm 2
 			timer.startfresh();
@@ -123,18 +149,110 @@ public class SimSearch {
 			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
 			System.out.println("Prezision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
 			
-			
 			// calculating algorithm 4
-			// ...
+			//*
+			timer.startfresh();
+			result = new HungAlg(matrix.values).getMatches();
+			timer.stop();
+			System.out.println("HungAlg took " + timer.getTime() + " ms.");
+			
+			printSum(matrix.values, result);
+			
+			analyzer.analyze(result);
+			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
+			System.out.println("Precision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
+			//*/
+			
+			// testing alternative implementation
+			// http://konstantinosnedas.com/dev/soft/munkres.htm
+			//*
+			timer.startfresh();
+			int[][] tmp = HungarianAlgorithm.hgAlgorithm(matrix.values, "min");
+			timer.stop();
+			result = new ArrayList<int[]>();
+			for (int x = 0; x < tmp.length; x++) {
+				result.add(tmp[x]);
+			}
+			System.out.println("Hung (test) took " + timer.getTime() + " ms.");
+			
+			printSum(matrix.values, result);
+			
+			analyzer.analyze(result);
+			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
+			System.out.println("Precision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
+			//*/
 			
 			System.out.println("----------------");
 			System.out.println();
 		}
 	}
 	
+	public static void HungTest() {
+		/*double[][] matrix = new double[][] {
+		{1,2,3},
+		{2,4,6},
+		{3,6,9}};*/
+
+		/*double[][] matrix = new double[][] {
+		    {0, 8, 9, 0, 89, 12},
+		    {5, 0, 6, 6, 6, 12},
+		    {4, 5, 0, 8, 8, 43},
+		    {1, 2, 3, 0, 6, 7},
+		    {19, 67, 54, 2, 0, 6},
+		    {1, 2, 6, 8, 8, 0}
+		};*/
+		
+		double[][] matrix = new double[4][3];
+		
+		// random
+		Random rand = new Random();
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[0].length; j++) {
+				matrix[i][j] = rand.nextDouble();
+			}
+		}
+		
+		
+		// test of hungarian
+		
+		ArrayList<int[]> result = new HungAlg(matrix).getMatches();
+		/*
+		for (int i=0; i<result.size(); i++)
+		{
+			System.out.printf("array(%d,%d)\n", (result.get(i)[0]+1), (result.get(i)[1]+1));
+		}
+		//*/
+		
+		
+		// the real solution
+		int[][] assignment = HungarianAlgorithm.hgAlgorithm(matrix, "min");
+		/*
+		for (int i=0; i<assignment.length; i++)
+		{
+			System.out.printf("array(%d,%d)\n", (assignment[i][0]+1), (assignment[i][1]+1));
+		}
+		//*/
+		
+		//*
+		if (assignment.length != result.size()) {
+			System.out.println("Error (1)");
+		} else {
+			for (int i=0; i < assignment.length; i++)
+			{
+				if (assignment[i][0] != result.get(i)[0] || assignment[i][1] != result.get(i)[1]) {
+					System.out.println("Error (2)");
+				}
+			}
+		}
+		//*/
+	}
+	
 	public static void main(String[] args) {
 		runtimetest();
-		qualitytest();
+		//qualitytest();
+		/*for (int i = 0; i < 1; i++) {
+			HungTest();
+		}*/
 	}
 
 }
