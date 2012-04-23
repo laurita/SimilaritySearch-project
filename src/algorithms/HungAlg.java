@@ -154,8 +154,10 @@ public class HungAlg {
 		 * jobs. Rotate the matrix so that there are at least as many columns as
 		 * rows and let k=min(n,m).
 		 */
+		boolean needToInvert = false;
 		if (matrixInp[0].length < matrixInp.length) {
 			matrix = transposeMatrix(matrixInp);
+			needToInvert = true;
 		} else {
 			matrix = matrixInp;
 		}
@@ -247,8 +249,8 @@ public class HungAlg {
 						done = true;
 						step = 6;
 					}
-					printStep(4);
 				}
+				printStep(4);
 				break;
 			case 5:
 				/*
@@ -309,6 +311,7 @@ public class HungAlg {
 				step = 3;
 				break;
 			case 6:
+				// unclear - what if there was no value found?
 				/*
 				 * Step 6: Add the value found in Step 4 to every element of
 				 * each covered row, and subtract it from every element of each
@@ -345,7 +348,12 @@ public class HungAlg {
 		for (int i = 0; i < blank.length; i++) {
 			for (int j = 0; j < blank[i].length; j++) {
 				if (blank[i][j] == 1) {
-					results.add(new int[] {i,j});
+					// check if the matrix was transposed before
+					if (needToInvert) {
+						results.add(new int[] {j,i});
+					} else {
+						results.add(new int[] {i,j});
+					}
 					break;
 				}
 			}
