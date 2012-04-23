@@ -2,6 +2,7 @@ package algorithms;
 
 import java.util.ArrayList;
 
+import util.ArrayTools;
 import util.MatrixTools;
 
 // the main issue described ~minute 37
@@ -146,10 +147,10 @@ public class HungAlg {
 		 */
 		boolean needToInvert = false;
 		if (matrixInp[0].length < matrixInp.length) {
-			matrix = MatrixTools.transpose(matrixInp);
+			matrix = MatrixTools.transpose(ArrayTools.cloneMatrix(matrixInp));
 			needToInvert = true;
 		} else {
-			matrix = matrixInp;
+			matrix = ArrayTools.cloneMatrix(matrixInp);
 		}
 
 		/* prepare: init all as unmarked */

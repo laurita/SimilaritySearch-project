@@ -10,6 +10,7 @@ import java.util.Random;
 
 import test.HungAlgTest;
 import test.StabMarrTest;
+import util.ArrayTools;
 import algorithms.GlobalGreedy;
 import algorithms.HungAlg;
 import algorithms.RNN;
@@ -62,7 +63,7 @@ public class SimSearch {
 			timer.startfresh();
 			new HungAlg(matrix.values).getMatches();
 			timer.stop();
-			System.out.println("Hung took " + timer.getTime() + " ms.");
+			System.out.println("Hungarian took " + timer.getTime() + " ms.");
 			// */
 		}
 		System.out.println();
@@ -103,10 +104,10 @@ public class SimSearch {
 			// calculating algorithm 1 (reverse nearest neighbor)
 			timer.startfresh();
 			result = RNN.matchAll(matrix);
-			result = RNN.matchAll(matrix);
 			timer.stop();
 			System.out.println("RNN took " + timer.getTime() + " ms.");
 			// analyze the result analyzer.analyze(result);
+			analyzer.analyze(result);
 			System.out.println("Recall: "
 					+ Math.round(analyzer.getRecall() * 10000) / 100.0 + "%");
 			System.out
@@ -118,13 +119,12 @@ public class SimSearch {
 
 			// calculating algorithm 2 (global greedy)
 			timer.startfresh();
-			ArrayList<int[]> result1 = GlobalGreedy.match(matrix);
-			result1 = GlobalGreedy.match(matrix);
+			result = GlobalGreedy.match(matrix);
 			timer.stop();
 			System.out
 					.println("Global Greedy took " + timer.getTime() + " ms.");
 			// analyze the result
-			analyzer.analyze(result1);
+			analyzer.analyze(result);
 			System.out.println("Recall: "
 					+ Math.round(analyzer.getRecall() * 10000) / 100.0 + "%");
 			System.out
@@ -173,7 +173,11 @@ public class SimSearch {
 		// generate a matrix of random size
 		Random rand = new Random(number);
 		// double[][] matrix = new double[10][10];
-		double[][] matrix = new double[rand.nextInt(100) + 1][rand.nextInt(100) + 1];
+		int tmp = rand.nextInt(100) + 1;
+		double[][] matrix = new double[tmp][tmp];
+		// for non-square matrixes the other implementation is not optimized
+		// our solution is always better!
+		//double[][] matrix = new double[rand.nextInt(100) + 1][rand.nextInt(100) + 1];
 
 		// fill the matrix with random values
 		for (int i = 0; i < matrix.length; i++) {
@@ -181,24 +185,35 @@ public class SimSearch {
 				matrix[i][j] = rand.nextDouble();
 			}
 		}
+		
+		/*matrix = new double[][] {
+				{10,19,8,15},
+				{10,18,7,17},
+				{13,16,9,14},
+				{12,19,8,18},
+				{14,17,10,19}
+		};*/
 
 		// test on hungarian algorithm
+		//*
 		if (!HungAlgTest.test(matrix)) {
 			System.out.println("Hungarian Algorithm failed... (" + number + ")");
 		}
+		//*/
 		
 		// test for stable marriage
+		/*
 		if (!StabMarrTest.test(matrix)) {
 			System.out.println("Stable Marriage Algorithm failed... (" + number + ")");
 		}
-		
+		//*/
 	}
 
 	public static void main(String[] args) {
-		// runtimetest();
+		 runtimetest();
 		// qualitytest();
-		//*
-		for (int i = 0; i < 1; i++) {
+		/*
+		for (int i = 0; i < 100; i++) {
 			impltest(i);
 		}
 		//*/

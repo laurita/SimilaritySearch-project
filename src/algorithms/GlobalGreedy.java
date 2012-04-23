@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import util.ArrayTools;
+
 public class GlobalGreedy {
 
 	// reference:
@@ -14,9 +16,9 @@ public class GlobalGreedy {
 	
 	public static ArrayList<int[]> match(DataObj matrix) {
 		ArrayList<int[]> M = new ArrayList<int[]>();
-		double[][] D = matrix.values;
-		String[] Alfa = matrix.rowNames;
-		String[] Beta = matrix.colNames;
+		double[][] D = ArrayTools.cloneMatrix(matrix.values);
+		String[] Alfa = matrix.rowNames.clone();
+		String[] Beta = matrix.colNames.clone();
 		ArrayList<Tuple> S = new ArrayList<Tuple>();
 		for (int i = 0; i < Alfa.length; i++) {
 			for (int j = 0; j < Beta.length; j++) {

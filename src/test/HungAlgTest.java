@@ -17,6 +17,7 @@ public class HungAlgTest {
 		double sum = 0;
 		for (int i = 0, len = solution.size(); i < len; i++) {
 			sum += matrix[solution.get(i)[0]][solution.get(i)[1]];
+			//System.out.println("[" + solution.get(i)[0] + ", " + solution.get(i)[1] + "]");
 		}
 		return sum;
 	}
@@ -41,11 +42,13 @@ public class HungAlgTest {
 		
 		// check for correctness
 		if (assignment1.size() != assignment2.size()
-				|| getScore(matrix, assignment1) != getScore(matrix,
-						assignment2)) {
-			System.out.println(getScore(matrix, assignment1) + " vs " + getScore(matrix, assignment2));
+				|| Math.abs(getScore(matrix, assignment1) - getScore(matrix,
+						assignment2)) > 0.00000000001) {
 			result = false;
 		}
+		//System.out.println(getScore(matrix, assignment1) + " vs " + getScore(matrix, assignment2));
+		//System.out.println(assignment1.size() + " vs " + assignment2.size());
+		
 		return result;
 	}
 }

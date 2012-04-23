@@ -2,6 +2,7 @@ package algorithms;
 
 import java.util.ArrayList;
 
+import util.ArrayTools;
 import util.MatrixTools;
 
 public class StableMarriage {
@@ -10,7 +11,8 @@ public class StableMarriage {
 	// College Admissions and the Stability of Marriage, D. Gale; L. S. Shapley
 	// The American Mathematical Monthly, Vol. 69, No. 1. (Jan., 1962), pp. 9-15.
 	
-	public static ArrayList<int[]> match(double[][] distances) {
+	public static ArrayList<int[]> match(double[][] matrixInp) {
+		double[][] distances = ArrayTools.cloneMatrix(matrixInp);
 		ArrayList<int[]> M = new ArrayList<int[]>();
 		boolean transposed = false;
 		if (distances.length < distances[0].length) {
