@@ -13,6 +13,7 @@ import algorithms.GlobalGreedy;
 import algorithms.HungAlg;
 import algorithms.HungarianAlgorithm;
 import algorithms.RNN;
+import algorithms.StableMarriage;
 
 public class SimSearch {
 	
@@ -45,6 +46,7 @@ public class SimSearch {
 			System.out.println("RNN took " + timer.getTime() + " ms.");
 			
 			// running algorithm 2
+
 			//*
 			timer.startfresh();
 			GlobalGreedy.match(matrix);
@@ -53,7 +55,10 @@ public class SimSearch {
 			//*/
 			
 			// running algorithm 3
-			// ...
+			timer.startfresh();
+			StableMarriage.match(matrix);
+			timer.stop();
+			System.out.println("Stable Marriage took " + timer.getTime() + " ms.");
 			
 			// running algorithm 4
 			timer.startfresh();
@@ -110,7 +115,7 @@ public class SimSearch {
 			timer.stop();
 			System.out.println("RNN took " + timer.getTime() + " ms.");
 			
-			// analyze the result
+			//analyze the result
 			analyzer.analyze(result);
 			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
 			System.out.println("Precision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
@@ -120,11 +125,29 @@ public class SimSearch {
 			//*/
 			
 			// calculating algorithm 2
-			// ...
+			timer.startfresh();
+			ArrayList<int[]> result1 = GlobalGreedy.match(matrix);
+			result1 = GlobalGreedy.match(matrix);
+			timer.stop();
+			System.out.println("Global Greedy took " + timer.getTime() + " ms.");
+			
+			// analyze the result
+			analyzer.analyze(result1);
+			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
+			System.out.println("Prezision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
 			
 			
 			// calculating algorithm 3
-			// ...
+			timer.startfresh();
+			ArrayList<int[]> result2 = StableMarriage.match(matrix);
+			result2 = StableMarriage.match(matrix);
+			timer.stop();
+			System.out.println("Stable Marriage took " + timer.getTime() + " ms.");
+			
+			// analyze the result
+			analyzer.analyze(result2);
+			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
+			System.out.println("Prezision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
 			
 			// calculating algorithm 4
 			//*

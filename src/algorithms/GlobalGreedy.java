@@ -12,8 +12,8 @@ public class GlobalGreedy {
 	// reference:
 	// Nikolaus Augsten, Approximate Matching of Hierarchical Data, Ph.D. Dissertation
 	
-	public static ArrayList<String[]> match(DataObj matrix) {
-		ArrayList<String[]> M = new ArrayList<String[]>();
+	public static ArrayList<int[]> match(DataObj matrix) {
+		ArrayList<int[]> M = new ArrayList<int[]>();
 		double[][] D = matrix.values;
 		String[] Alfa = matrix.rowNames;
 		String[] Beta = matrix.colNames;
@@ -35,9 +35,9 @@ public class GlobalGreedy {
 		int s = 0;
 		while (M.size() < Math.min(Alfa.length, Beta.length)) {
 			Tuple tuple = S.get(s);
-			String[] match = new String[2];
-			match[0] = tuple.alpha;
-			match[1] = tuple.beta;
+			int[] match = new int[2];
+			match[0] = tuple.row;
+			match[1] = tuple.col;
 			if (!seen_row[tuple.row] && !seen_col[tuple.col]) {
 				M.add(match);
 				seen_row[tuple.row] = true;

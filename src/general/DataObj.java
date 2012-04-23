@@ -87,4 +87,17 @@ public class DataObj {
 		this.colCount = colCount;
 		this.rowCount = rowCount;
 	}
+
+	public DataObj transpose() {
+		int n = this.rowCount;
+		int m = this.colCount;
+		double[][] values = new double[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                values[i][j] = this.values[j][i];
+            }
+        }
+        DataObj M = new DataObj(values, this.colNames, this.rowNames);
+        return M;
+    }
 }

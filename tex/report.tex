@@ -1,0 +1,85 @@
+\documentclass[a4paper,11pt]{article}
+%
+%--------------------   start of the 'preamble'
+%
+\usepackage{graphicx,amssymb,amstext,amsmath}
+%
+%%    homebrew commands -- to save typing
+\newcommand\etc{\textsl{etc}}
+\newcommand\eg{\textsl{eg.}\ }
+\newcommand\etal{\textsl{et al.}}
+\newcommand\Quote[1]{\lq\textsl{#1}\rq}
+\newcommand\fr[2]{{\textstyle\frac{#1}{#2}}}
+%
+%---------------------   end of the 'preamble'
+%
+\begin{document}
+%-----------------------------------------------------------
+\title{
+  \textbf{\large Similarity Search Project Report}\\
+  Comparison of Matching Algorithms
+}
+
+\author{Lukas Siemon \& Laura Bledaite}
+\maketitle
+
+\begin{abstract}
+Required or not?
+\end{abstract}
+
+\section{Introduction}
+
+This project focuses on a problem of approximate string matching. The main objective is to match similar strings based on their distances. Possible applications include object identification in different databases, error correction in the text, finding matches for the queries with a spelling mistake \etc. 
+We implement and compare four string matching algorithms: reverse nearest neighbor, global greedy, stable marriage, and the Hungarian algorithm. The comparison of algorithms include the runtime and quality tests. In our runtime tests we use randomly generated distance data of different sizes, namely: 10, 100, 1000. In the quality tests, we use Bolzano Address Tree distance data and compute recall and precision for all the algorithms.
+
+\section{Algorithms}
+
+\subsection{Reverse Nearest Neighbor}
+
+\subsection{Global Greedy}
+
+The Global Greedy algorithm initially sorts the string pairs by their distance and stores them in an array. In the beginning the closest string pair is matched. The respective row and column are marked in the distance matrix to avoid a situation that a string is matched twice. The remaining string pairs in an array are matched in ascending order of their distances if both strings in the pair are still available. This algorithm matches as many strings as possible, i.e $min(\#rows, \#columns)$. Therefore, it would match even very different strings, if there are no better matches left. The algorithm yields a stable matching, which is proven in \cite{augsten}.
+
+The Global Greedy matching algorithm requires $O(N^2)$ space (the size of the distance matrix) and runs in $O(N^2 log(N))$ time (sorting the distances).
+
+\subsection{Stable Marriage}
+
+The Stable Marriage algorithm was primarily presented in \cite{gale}. One of the application examples was the assignments of students to the colleges given a quota for each college and the preferential rankings of both sides. The special case of a problem, when there is the same number of studends and colleges and all the quotas are unity was explained as a situation when the equal number of men and women seek for a partner based on their ranking lists.
+
+The latter case is readily applicable for the string mathing problem. The difference is that for mathing strings the input is distance matrices. Threrefore, to use the algorithm the row-wise and column-wise rankings of the distances have to be calculated (the smaller the distance, the better the ranking).
+
+Further, the algorithm is identical to the stable marriage. Suppose, that there are less columns than rows in the distence matrix. If not, then transpose the distance matrix and follow the same procedure. Also, imagine that rows represent boys, and columns represent girls. To start, each boy finds its best ranked girl. Each girl who receives more than one proposal rejects all but her favorite from among those who have proposed to her. However, she does not accept him yet, but keeps him on a string to allow for the possibility that someone better may come along later.
+
+In the second stage those boys who were rejected now propose to their second choices. Each girl receiving proposals chooses her favorite from the group consisting of the new proposers and the boy on her string, if any. She rejects all the rest and again keeps the favorite in suspense.
+
+We proceed in the same manner. Those who are rejected at the second stage propose to their next choices, and the girls again reject all but the best proposal they have had so far.
+
+\subsection{Hungarian}
+
+\section{Experiments}
+
+\subsection{Runtime Tests}
+
+\subsection{Quality Tests}
+
+\section{Conclusions}
+
+%-----------------------------------------------------------
+\addcontentsline{toc}{chapter}{\numberline{}Bibliography}
+
+\begin{thebibliography}{9999}
+%\enlargethispage{\baselineskip}
+\bibitem{augsten}
+Augsten, N.: Approximate Matching of Hierarchical Data. 
+Ph.D. Dissertation, Department of Computer Science Faculty of Engineering and Science Aalborg University
+\bibitem{gale}
+Gale D.; Shapley L. S., College Admissions and the Stability of Marriage, The American Mathematical Monthly,  69(1): 9–15, 1962.
+\end{thebibliography}
+\vfill
+\begin{flushright}\small Prepared in \LaTeXe\ \end{flushright}
+
+%-----------------------------------------------------------
+\appendix
+\section{Section Name}
+%-----------------------------------------------------------
+\end{document}
