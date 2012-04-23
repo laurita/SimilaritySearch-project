@@ -1,8 +1,8 @@
 package algorithms;
 
-import general.DataObj;
-
 import java.util.ArrayList;
+
+import util.MatrixTools;
 
 // the main issue described ~minute 37
 // http://www.youtube.com/watch?v=BUGIhEecipE
@@ -26,17 +26,6 @@ public class HungAlg {
 	// #############################################
 	// ################## Helper ###################
 	// #############################################
-	// transpose a matrix
-	private double[][] transposeMatrix(double[][] matrix) {
-		double[][] transpose = new double[matrix[0].length][matrix.length];
-
-		for (int x = 0; x < matrix[0].length; x++) {
-			for (int y = 0; y < matrix.length; y++)
-				transpose[x][y] = matrix[y][x];
-		}
-		return transpose;
-	}
-
 	// find smallest value in array and subtract it from all values in this
 	// array
 	private double[] subtractSV(double[] row) {
@@ -70,6 +59,7 @@ public class HungAlg {
 	}
 
 	// print a matrix
+	@SuppressWarnings("unused")
 	private void printMatrix() {
 		for (int i = 0; i < colCov.length; i++) {
 			System.out.print("   " + colCov[i]);
@@ -156,7 +146,7 @@ public class HungAlg {
 		 */
 		boolean needToInvert = false;
 		if (matrixInp[0].length < matrixInp.length) {
-			matrix = transposeMatrix(matrixInp);
+			matrix = MatrixTools.transpose(matrixInp);
 			needToInvert = true;
 		} else {
 			matrix = matrixInp;

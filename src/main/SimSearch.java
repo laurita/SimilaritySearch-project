@@ -55,7 +55,7 @@ public class SimSearch {
 			
 			// running algorithm 3
 			timer.startfresh();
-			StableMarriage.match(matrix);
+			StableMarriage.match(matrix.values);
 			timer.stop();
 			System.out.println("Stable Marriage took " + timer.getTime() + " ms.");
 			
@@ -138,13 +138,12 @@ public class SimSearch {
 			
 			// calculating algorithm 3
 			timer.startfresh();
-			ArrayList<int[]> result2 = StableMarriage.match(matrix);
-			result2 = StableMarriage.match(matrix);
+			result = StableMarriage.match(matrix.values);
 			timer.stop();
 			System.out.println("Stable Marriage took " + timer.getTime() + " ms.");
 			
 			// analyze the result
-			analyzer.analyze(result2);
+			analyzer.analyze(result);
 			System.out.println("Recall: " + Math.round( analyzer.getRecall() * 10000 ) / 100.0 + "%");
 			System.out.println("Prezision: " + Math.round( analyzer.getPrecision() * 10000) / 100.0 + "%");
 			

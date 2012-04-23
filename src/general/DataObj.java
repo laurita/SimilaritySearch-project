@@ -88,6 +88,7 @@ public class DataObj {
 		this.rowCount = rowCount;
 	}
 
+	/*
 	public DataObj transpose() {
 		int n = this.rowCount;
 		int m = this.colCount;
@@ -100,4 +101,5 @@ public class DataObj {
         DataObj M = new DataObj(values, this.colNames, this.rowNames);
         return M;
     }
+    */
 }

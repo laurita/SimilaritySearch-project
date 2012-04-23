@@ -1,6 +1,8 @@
 package algorithms;
 
 import java.util.ArrayList;
+
+import util.MatrixTools;
 import general.DataObj;
 
 public class StableMarriage {
@@ -9,16 +11,15 @@ public class StableMarriage {
 	// College Admissions and the Stability of Marriage, D. Gale; L. S. Shapley
 	// The American Mathematical Monthly, Vol. 69, No. 1. (Jan., 1962), pp. 9-15.
 	
-	public static ArrayList<int[]> match(DataObj matrix) {
+	public static ArrayList<int[]> match(double[][] distances) {
 		ArrayList<int[]> M = new ArrayList<int[]>();
 		boolean transposed = false;
-		if (matrix.rowCount < matrix.colCount) {
-			matrix = matrix.transpose();
+		if (distances.length < distances[0].length) {
+			distances = MatrixTools.transpose(distances);
 			transposed = true;
 		}
-		int nr_cols = matrix.colCount;
-		int nr_rows = matrix.rowCount;
-		double[][] distances = matrix.values;
+		int nr_cols = distances[0].length;
+		int nr_rows = distances.length;
 		int[][] rowwise_ranks = StableMarriage.rankRowwise(distances);
 		int[][] columnwise_ranks = StableMarriage.rankColumnwise(distances);
 		boolean allColumnsReceivedProposal = false;
