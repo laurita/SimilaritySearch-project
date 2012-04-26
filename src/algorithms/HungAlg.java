@@ -87,6 +87,27 @@ public class HungAlg {
 		return -1;
 	}
 
+	// find the smallest uncovered item
+	private int[] findSmallestUncovItem() {
+		double value = -1;
+		int[] result = new int[] {-1, -1};
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; rowCov[i] == 0 && j < matrix[0].length; j++) {
+				if (colCov[j] == 0) {
+					if (value == -1 || value > matrix[i][j]) {
+						result = new int[] {i, j};
+						value = matrix[i][j];
+						if (value == 0) {
+							return result;
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	/*
 	// find a zero that is not covered
 	private int[] findNonCovZero() {
 		for (int i = 0; i < matrix.length; i++) {
@@ -115,6 +136,7 @@ public class HungAlg {
 		}
 		return value;
 	}
+	*/
 	
 	// find starred zero in column
 	private int findStarredZeroInCol(int col) {
@@ -185,6 +207,9 @@ public class HungAlg {
 		}
 		int step = 3;
 		printStep(2);
+		// tmp last zero
+		int[] lastzero = null;
+		
 		while (step != 0) {
 			switch (step) {
 			case 3:
@@ -194,16 +219,14 @@ public class HungAlg {
 				 * set of unique assignments. In this case, Go to DONE,
 				 * otherwise, Go to Step 4.
 				 */
+				int sum = 0;
 				for (int j = 0; j < colCov.length; j++) {
 					for (int i = 0; colCov[j] == 0 && i < matrix.length; i++) {
 						if (blank[i][j] == 1) {
 							colCov[j] = 1;
 						}
 					}
-				}
-				int sum = 0;
-				for (int i = 0; i < colCov.length; i++) {
-					sum += colCov[i];
+					sum += colCov[j];
 				}
 				if (sum == rowCov.length) {
 					step = 0;
@@ -223,9 +246,10 @@ public class HungAlg {
 				 */
 				boolean done = false;
 				while (!done) {
-					int[] zero = findNonCovZero();
+					int[] zero = findSmallestUncovItem();
+					lastzero = zero;
 					// System.out.println(zero[0] + ", " + zero[1]);
-					if (zero[0] != -1) {
+					if (zero[0] != -1 && matrix[zero[0]][zero[1]] == 0) {
 						blank[zero[0]][zero[1]] = 2;
 						int starred = findStarInRow(zero[0]);
 						if (starred != -1) {
@@ -257,7 +281,7 @@ public class HungAlg {
 				 */
 				boolean loop = true;
 				ArrayList<int[]> series = new ArrayList<int[]>();
-				int[] Z0 = findNonCovZero();
+				int[] Z0 = lastzero;//findNonCovZero();
 				series.add(Z0);
 				while (loop) {
 					int Z1 = findStarredZeroInCol(Z0[1]);
@@ -310,7 +334,7 @@ public class HungAlg {
 				 * stars, primes, or covered lines.
 				 */
 				// find the smallest value
-				double minval = findSmallestUncovItem();
+				double minval = matrix[lastzero[0]][lastzero[1]];
 				// System.out.println(minval);
 				for (int i = 0; i < matrix.length; i++) {
 					for (int j = 0; j < matrix[0].length; j++) {

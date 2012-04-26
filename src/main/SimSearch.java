@@ -1,5 +1,7 @@
 package main;
 
+import external.HungarianAlgorithm;
+import external.HungarianAlgorithm2;
 import general.Analyzer;
 import general.DataObj;
 import general.MatrixGenerator;
@@ -23,8 +25,8 @@ public class SimSearch {
 	public static void runtimetest() {
 
 		System.out.println("Testing runtime.");
-		//int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
-		int[] testsizes = new int[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+		int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
+		//int[] testsizes = new int[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
 		Timer timer = new Timer();
 		
 		// holds the values
@@ -73,7 +75,8 @@ public class SimSearch {
 			// running algorithm 4 (hungarian)
 			// *
 			timer.startfresh();
-			new HungAlg(matrix.values).getMatches();
+			HungarianAlgorithm2.hgAlgorithm(matrix.values, "min");
+			//new HungAlg(matrix.values).getMatches();
 			timer.stop();
 			HA[i] = new int[] {testsizes[i], (int) timer.getTime()};
 			System.out.println("Hungarian took " + timer.getTime() + " ms.");
