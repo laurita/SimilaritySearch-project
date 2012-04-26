@@ -23,8 +23,15 @@ public class SimSearch {
 	public static void runtimetest() {
 
 		System.out.println("Testing runtime.");
-		int[] testsizes = new int[] { 10, 100, 200, 300, 400, 500,  1000 };
+		//int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
+		int[] testsizes = new int[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
 		Timer timer = new Timer();
+		
+		// holds the values
+		int[][] RNN = new int[testsizes.length][];
+		int[][] GG = new int[testsizes.length][];
+		int[][] SM = new int[testsizes.length][];
+		int[][] HA = new int[testsizes.length][];
 
 		for (int i = 0; i < testsizes.length; i++) {
 			System.out.println("Testing for size "
@@ -38,8 +45,9 @@ public class SimSearch {
 			// running algorithm 1 (Reverse neareast neighbour)
 			// *
 			timer.startfresh();
-			RNN.match(matrix.values);
+			algorithms.RNN.match(matrix.values);
 			timer.stop();
+			RNN[i] = new int[] {testsizes[i], (int) timer.getTime()};
 			System.out.println("RNN took " + timer.getTime() + " ms.");
 			// */
 
@@ -48,6 +56,7 @@ public class SimSearch {
 			timer.startfresh();
 			GlobalGreedy.match(matrix.values);
 			timer.stop();
+			GG[i] = new int[] {testsizes[i], (int) timer.getTime()};
 			System.out.println("GG took " + timer.getTime() + " ms.");
 			// */
 
@@ -56,6 +65,7 @@ public class SimSearch {
 			timer.startfresh();
 			StableMarriage.match(matrix.values);
 			timer.stop();
+			SM[i] = new int[] {testsizes[i], (int) timer.getTime()};
 			System.out.println("Stable Marriage took " + timer.getTime()
 					+ " ms.");
 			// */
@@ -65,10 +75,53 @@ public class SimSearch {
 			timer.startfresh();
 			new HungAlg(matrix.values).getMatches();
 			timer.stop();
+			HA[i] = new int[] {testsizes[i], (int) timer.getTime()};
 			System.out.println("Hungarian took " + timer.getTime() + " ms.");
 			// */
 		}
 		System.out.println();
+		// print the maple output
+		System.out.println("############Maple###########");
+		System.out.print("with(plots):");
+		System.out.print("RNN := [");
+		for (int i = 0; i < RNN.length; i++) {
+			System.out.print("[" + RNN[i][0] + ", " + RNN[i][1] + "]" + 
+					(i + 1 < RNN.length ? ", " : ""));
+			
+		}
+		System.out.print("]:");
+		
+		System.out.print("GG := [");
+		for (int i = 0; i < GG.length; i++) {
+			System.out.print("[" + GG[i][0] + ", " + GG[i][1] + "]" + 
+					(i + 1 < GG.length ? ", " : ""));
+		}
+		System.out.print("]:");
+		
+		System.out.print("SM := [");
+		for (int i = 0; i < SM.length; i++) {
+			System.out.print("[" + SM[i][0] + ", " + SM[i][1] + "]" + 
+					(i + 1 < GG.length ? ", " : ""));
+		}
+		System.out.print("]:");
+		
+		System.out.print("HA := [");
+		for (int i = 0; i < HA.length; i++) {
+			System.out.print("[" + HA[i][0] + ", " + HA[i][1] + "]" + 
+					(i + 1 < GG.length ? ", " : ""));
+		}
+		System.out.print("]:");
+		
+		System.out.println("display({logplot(RNN, axis[2] = [gridlines], color = blue), logplot(GG, color = green), logplot(SM, color = black), logplot(HA)}, title = \"blue = RNN, green = GG, black = SM, red = HA\");");
+		
+		System.out.println("############################");
+		
+		/*
+		with(plots):
+		P := [[10,543],[20,432],[30,342]];
+		Q := [[10,543],[20,432],[30,332]];
+		
+		*/
 	}
 
 	public static void qualitytest() {
@@ -104,6 +157,13 @@ public class SimSearch {
 			// running the algorithms
 
 			// calculating algorithm 1 (reverse nearest neighbor)
+			/*
+			should be:
+			Distance Correct Recall (%) Precision (%) F-measure Runtime (s)
+			Windowed pq-grams (w=8, p=2, q=2) 248 82.9 98.4 0.900 24.9
+			Windowed pq-grams (w=5, p=1, q=2) 245 81.9 98.8 0.896 12.7
+			Windowed pq-grams (w=3, p=2, q=2) 240 80.3 98.8 0.886 7.4
+			*/
 			timer.startfresh();
 			result = RNN.match(matrix.values);
 			timer.stop();
@@ -229,8 +289,8 @@ public class SimSearch {
 	}
 
 	public static void main(String[] args) {
-		// runtimetest();
-		 qualitytest();
+		 runtimetest();
+		// qualitytest();
 		/*
 		for (int i = 0; i < 100; i++) {
 			impltest(i);
