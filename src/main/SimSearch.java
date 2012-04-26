@@ -8,7 +8,9 @@ import general.Timer;
 import java.util.ArrayList;
 import java.util.Random;
 
+import test.GlobalGreedyTest;
 import test.HungAlgTest;
+import test.RNNTest;
 import test.StabMarrTest;
 import util.ArrayTools;
 import algorithms.GlobalGreedy;
@@ -21,7 +23,7 @@ public class SimSearch {
 	public static void runtimetest() {
 
 		System.out.println("Testing runtime.");
-		int[] testsizes = new int[] { 10, 100, 1000 };
+		int[] testsizes = new int[] { 10, 100, 200, 300, 400, 500,  1000 };
 		Timer timer = new Timer();
 
 		for (int i = 0; i < testsizes.length; i++) {
@@ -36,7 +38,7 @@ public class SimSearch {
 			// running algorithm 1 (Reverse neareast neighbour)
 			// *
 			timer.startfresh();
-			RNN.matchAll(matrix);
+			RNN.match(matrix.values);
 			timer.stop();
 			System.out.println("RNN took " + timer.getTime() + " ms.");
 			// */
@@ -44,7 +46,7 @@ public class SimSearch {
 			// running algorithm 2 (global greedy)
 			// *
 			timer.startfresh();
-			GlobalGreedy.match(matrix);
+			GlobalGreedy.match(matrix.values);
 			timer.stop();
 			System.out.println("GG took " + timer.getTime() + " ms.");
 			// */
@@ -103,7 +105,7 @@ public class SimSearch {
 
 			// calculating algorithm 1 (reverse nearest neighbor)
 			timer.startfresh();
-			result = RNN.matchAll(matrix);
+			result = RNN.match(matrix.values);
 			timer.stop();
 			System.out.println("RNN took " + timer.getTime() + " ms.");
 			// analyze the result analyzer.analyze(result);
@@ -119,7 +121,7 @@ public class SimSearch {
 
 			// calculating algorithm 2 (global greedy)
 			timer.startfresh();
-			result = GlobalGreedy.match(matrix);
+			result = GlobalGreedy.match(matrix.values);
 			timer.stop();
 			System.out
 					.println("Global Greedy took " + timer.getTime() + " ms.");
@@ -128,7 +130,7 @@ public class SimSearch {
 			System.out.println("Recall: "
 					+ Math.round(analyzer.getRecall() * 10000) / 100.0 + "%");
 			System.out
-					.println("Prezision: "
+					.println("Precision: "
 							+ Math.round(analyzer.getPrecision() * 10000)
 							/ 100.0 + "%");
 
@@ -143,7 +145,7 @@ public class SimSearch {
 			System.out.println("Recall: "
 					+ Math.round(analyzer.getRecall() * 10000) / 100.0 + "%");
 			System.out
-					.println("Prezision: "
+					.println("Precision: "
 							+ Math.round(analyzer.getPrecision() * 10000)
 							/ 100.0 + "%");
 
@@ -204,11 +206,26 @@ public class SimSearch {
 		//*/
 		
 		// test for stable marriage
-		/*
+		//*
 		if (!StabMarrTest.test(matrix)) {
 			System.out.println("Stable Marriage Algorithm failed... (" + number + ")");
 		}
 		//*/
+		
+		// test the RNN
+		//*
+		if (!RNNTest.test(matrix)) {
+			System.out.println("Stable Marriage Algorithm failed... (" + number + ")");
+		}
+		//*/
+		
+		// test the GlobalGreedy
+		//*
+		if (!GlobalGreedyTest.test(matrix)) {
+			System.out.println("Global Greedy failed... (" + number + ")");
+		}
+		//*/
+		
 	}
 
 	public static void main(String[] args) {

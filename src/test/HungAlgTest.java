@@ -30,6 +30,13 @@ public class HungAlgTest {
 		// create result for our implementation
 		ArrayList<int[]> assignment1 = new algorithms.HungAlg(matrix)
 				.getMatches();
+		
+		// do sanity check
+		if (!SanityTest.doCheck(assignment1)) {
+			System.out.println("Sanity check failed for Hungarian Algorithm");
+			result = false;
+		}
+		
 		// result for imported implementation
 		ArrayList<int[]> assignment2 = new ArrayList<int[]>();
 		{

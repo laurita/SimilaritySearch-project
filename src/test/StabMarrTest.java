@@ -14,6 +14,17 @@ public class StabMarrTest {
 		
 		// create result for our implementation
 		ArrayList<int[]> assignment1 = algorithms.StableMarriage.match(matrix);
+		
+		// check that the result is stable
+		// ...
+		
+		// do sanity check
+		if (!SanityTest.doCheck(assignment1)) {
+			System.out.println("Sanity check failed for Stable Marriage");
+			result = false;
+		}
+		
+		/*
 		// result for imported implementation
 		ArrayList<int[]> assignment2 = new ArrayList<int[]>();
 		{
@@ -34,6 +45,7 @@ public class StabMarrTest {
 				result = false;
 			}
 		}
+		*/
 		
 		return result;
 	}
