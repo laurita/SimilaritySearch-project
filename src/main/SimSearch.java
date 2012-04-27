@@ -1,12 +1,8 @@
 package main;
 
-import external.HungarianAlgorithm;
-import external.HungarianAlgorithm2;
-import external.StableMarriage2;
 import general.Analyzer;
 import general.DataObj;
 import general.MatrixGenerator;
-import general.Printer;
 import general.Timer;
 
 import java.util.ArrayList;
@@ -16,7 +12,6 @@ import test.GlobalGreedyTest;
 import test.HungAlgTest;
 import test.RNNTest;
 import test.StabMarrTest;
-import util.ArrayTools;
 import algorithms.GlobalGreedy;
 import algorithms.HungAlg;
 import algorithms.RNN;
@@ -173,6 +168,7 @@ public class SimSearch {
 			Windowed pq-grams (w=5, p=1, q=2) 245 81.9 98.8 0.896 12.7
 			Windowed pq-grams (w=3, p=2, q=2) 240 80.3 98.8 0.886 7.4
 			*/
+			
 			timer.startfresh();
 			result = RNN.match(matrix.values);
 			timer.stop();
@@ -298,9 +294,9 @@ public class SimSearch {
 	}
 
 	public static void main(String[] args) {
-		 runtimetest();
+		// runtimetest();
 		// qualitytest();
-		/*
+		//*
 		for (int i = 0; i < 100; i++) {
 			impltest(i);
 		}
