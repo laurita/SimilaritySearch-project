@@ -27,10 +27,10 @@ public class SimSearch {
 	public static void runtimetest() {
 
 		System.out.println("Testing runtime.");
-		//int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
-		int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
-				1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000,
-				2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000};
+		int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
+		//int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
+		//		1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000,
+		//		2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000};
 		//int[] testsizes = new int[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
 		Timer timer = new Timer();
 		
@@ -50,6 +50,8 @@ public class SimSearch {
 			System.out.println("Running algorithms:");
 
 			// running algorithm 1 (Reverse neareast neighbour)
+			// runtime should be linear but is n^2
+			// but how can that be if the matrix is n x n ?!?!
 			// *
 			timer.startfresh();
 			algorithms.RNN.match(matrix.values);
@@ -59,19 +61,21 @@ public class SimSearch {
 			// */
 
 			// running algorithm 2 (global greedy)
+			// note: runtime seems ok
 			// *
 			timer.startfresh();
-			//GlobalGreedy.match(matrix.values);
+			GlobalGreedy.match(matrix.values);
 			timer.stop();
 			GG[i] = new int[] {testsizes[i], (int) timer.getTime()};
 			System.out.println("GG took " + timer.getTime() + " ms.");
 			// */
 
 			// running algorithm 3 (stable marriage)
+			// runtime should be n^2 (see example) but is n^3
 			// *
 			timer.startfresh();
 			//new StableMarriage2(testsizes[i]);
-			//StableMarriage.match(matrix.values);
+			StableMarriage.match(matrix.values);
 			timer.stop();
 			SM[i] = new int[] {testsizes[i], (int) timer.getTime()};
 			System.out.println("Stable Marriage took " + timer.getTime()
@@ -79,10 +83,12 @@ public class SimSearch {
 			// */
 
 			// running algorithm 4 (hungarian)
+			// runtime is n^4, but all other implementation also have the same runtime
+			// not sure how this can be reduced to n^3
 			// *
 			timer.startfresh();
 			//HungarianAlgorithm2.hgAlgorithm(matrix.values, "min");
-			//new HungAlg(matrix.values).getMatches();
+			new HungAlg(matrix.values).getMatches();
 			timer.stop();
 			HA[i] = new int[] {testsizes[i], (int) timer.getTime()};
 			System.out.println("Hungarian took " + timer.getTime() + " ms.");
@@ -292,8 +298,8 @@ public class SimSearch {
 	}
 
 	public static void main(String[] args) {
-		// runtimetest();
-		 qualitytest();
+		 runtimetest();
+		// qualitytest();
 		/*
 		for (int i = 0; i < 100; i++) {
 			impltest(i);
