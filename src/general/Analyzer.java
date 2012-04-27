@@ -2,8 +2,6 @@ package general;
 
 import java.util.ArrayList;
 
-import util.ArrayTools;
-
 // class that calculates recall and precision
 
 public class Analyzer {

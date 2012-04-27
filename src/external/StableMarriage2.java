@@ -118,7 +118,8 @@ public class StableMarriage2
 	printMatrix(womanPref);
     }
 
-    private void printMarriage(int[] m) {
+    @SuppressWarnings("unused")
+	private void printMarriage(int[] m) {
 	System.out.println("Married couples (woman + man): ");
 	for (int i = 0; i < m.length; i++)
 	    System.out.println(i + " + " + m[i]);

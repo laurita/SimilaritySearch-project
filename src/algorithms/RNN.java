@@ -1,10 +1,6 @@
 package algorithms;
 
-import general.DataObj;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class RNN {
 	
