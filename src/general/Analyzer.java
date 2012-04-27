@@ -2,6 +2,8 @@ package general;
 
 import java.util.ArrayList;
 
+import util.ArrayTools;
+
 // class that calculates recall and precision
 
 public class Analyzer {
@@ -18,8 +20,8 @@ public class Analyzer {
 	protected int getRelevant(DataObj matrix) {
 		// find the real match count
 		int count = 0;
-		String[] a = matrix.colNames;
-		String[] b = matrix.rowNames;
+		String[] a = matrix.colNames.clone();
+		String[] b = matrix.rowNames.clone();
 		java.util.Arrays.sort(a);
 		java.util.Arrays.sort(b);
 		int aindex = 0;  

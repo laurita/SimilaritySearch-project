@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+import util.ArrayTools;
+
 public class DataObj {
 	
 	public final double[][] values;
@@ -63,7 +65,7 @@ public class DataObj {
 			
 			// create the matrix
 			matrix = new double[rowobj.size()][colobj.size()];
-
+			
 			// read the matrix entries
 			in = new BufferedReader(new FileReader(filename));
 			while ((line = in.readLine()) != null) {
@@ -87,19 +89,4 @@ public class DataObj {
 		this.colCount = colCount;
 		this.rowCount = rowCount;
 	}
-
-	/*
-	public DataObj transpose() {
-		int n = this.rowCount;
-		int m = this.colCount;
-		double[][] values = new double[m][n];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                values[i][j] = this.values[j][i];
-            }
-        }
-        DataObj M = new DataObj(values, this.colNames, this.rowNames);
-        return M;
-    }
-    */
 }

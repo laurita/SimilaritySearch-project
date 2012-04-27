@@ -2,9 +2,11 @@ package main;
 
 import external.HungarianAlgorithm;
 import external.HungarianAlgorithm2;
+import external.StableMarriage2;
 import general.Analyzer;
 import general.DataObj;
 import general.MatrixGenerator;
+import general.Printer;
 import general.Timer;
 
 import java.util.ArrayList;
@@ -25,7 +27,10 @@ public class SimSearch {
 	public static void runtimetest() {
 
 		System.out.println("Testing runtime.");
-		int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
+		//int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
+		int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
+				1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000,
+				2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000};
 		//int[] testsizes = new int[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
 		Timer timer = new Timer();
 		
@@ -56,7 +61,7 @@ public class SimSearch {
 			// running algorithm 2 (global greedy)
 			// *
 			timer.startfresh();
-			GlobalGreedy.match(matrix.values);
+			//GlobalGreedy.match(matrix.values);
 			timer.stop();
 			GG[i] = new int[] {testsizes[i], (int) timer.getTime()};
 			System.out.println("GG took " + timer.getTime() + " ms.");
@@ -65,7 +70,8 @@ public class SimSearch {
 			// running algorithm 3 (stable marriage)
 			// *
 			timer.startfresh();
-			StableMarriage.match(matrix.values);
+			//new StableMarriage2(testsizes[i]);
+			//StableMarriage.match(matrix.values);
 			timer.stop();
 			SM[i] = new int[] {testsizes[i], (int) timer.getTime()};
 			System.out.println("Stable Marriage took " + timer.getTime()
@@ -75,7 +81,7 @@ public class SimSearch {
 			// running algorithm 4 (hungarian)
 			// *
 			timer.startfresh();
-			HungarianAlgorithm2.hgAlgorithm(matrix.values, "min");
+			//HungarianAlgorithm2.hgAlgorithm(matrix.values, "min");
 			//new HungAlg(matrix.values).getMatches();
 			timer.stop();
 			HA[i] = new int[] {testsizes[i], (int) timer.getTime()};
@@ -118,20 +124,12 @@ public class SimSearch {
 		System.out.println("display({logplot(RNN, axis[2] = [gridlines], color = blue), logplot(GG, color = green), logplot(SM, color = black), logplot(HA)}, title = \"blue = RNN, green = GG, black = SM, red = HA\");");
 		
 		System.out.println("############################");
-		
-		/*
-		with(plots):
-		P := [[10,543],[20,432],[30,342]];
-		Q := [[10,543],[20,432],[30,332]];
-		
-		*/
 	}
 
 	public static void qualitytest() {
 		// the files to test on
-		// String[] data = new String[] {"testmatrix.txt"};
-		String[] data = new String[] { "Np3q2.dm", "Nw3p2q.dm", "Nw5p1q.dm",
-				"Nw8p2q.dm" };
+		// String[] data = new String[] {"testmatrix2.txt"};
+		String[] data = new String[] { "Np3q2.dm", "Nw3p2q.dm", "Nw5p1q.dm", "Nw8p2q.dm" };
 
 		// test for all the files
 		for (int i = 0; i < data.length; i++) {
@@ -149,7 +147,9 @@ public class SimSearch {
 			timer.stop();
 			System.out.println("ok");
 			System.out.println("Loading took " + timer.getTime() + " ms.");
-
+			
+			//System.out.println(matrix.values[72][299]);
+			
 			// test that the matrix is correctly loaded
 			// Printer.printMatrix(matrix);
 
@@ -292,8 +292,8 @@ public class SimSearch {
 	}
 
 	public static void main(String[] args) {
-		 runtimetest();
-		// qualitytest();
+		// runtimetest();
+		 qualitytest();
 		/*
 		for (int i = 0; i < 100; i++) {
 			impltest(i);
