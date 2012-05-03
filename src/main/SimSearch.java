@@ -20,7 +20,7 @@ public class SimSearch {
 	public static void printSum(double[][] matrix, ArrayList<int[]> result) {
 		double sum = 0;
 		for (int i = 0, len = result.size(); i < len; i++) {
-			sum += matrix[result.get(i)[0]][result.get(i)[0]];
+			sum += matrix[result.get(i)[0]][result.get(i)[1]];
 		}
 		System.out.println("Sum is: " + sum);
 	}
@@ -108,7 +108,7 @@ public class SimSearch {
 			// running the algorithms
 			
 			// calculating algorithm 1 (reverse nearest neighbor)
-			/*
+			
 			timer.startfresh();
 			result = RNN.matchAll(matrix);
 			result = RNN.matchAll(matrix);
@@ -122,7 +122,7 @@ public class SimSearch {
 			
 			// print the result
 			//Printer.printResults(matrix, result);
-			//*/
+			
 			
 			// calculating algorithm 2
 			timer.startfresh();
@@ -249,7 +249,7 @@ public class SimSearch {
 	
 	public static void main(String[] args) {
 		runtimetest();
-		//qualitytest();
+		qualitytest();
 		/*for (int i = 0; i < 1; i++) {
 			HungTest();
 		}*/
