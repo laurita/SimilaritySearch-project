@@ -1,8 +1,7 @@
-package algorithms;
+package external;
+
 /*
  * Created on Apr 25, 2005
- * 
- * Munkres-Kuhn (Hungarian) Algorithm Clean Version: 0.11
  * 
  * Konstantinos A. Nedas                     
  * Department of Spatial Information Science & Engineering
@@ -23,7 +22,7 @@ package algorithms;
  *  
  * [This version contains only scarce comments. If you want to understand the 
  * inner workings of the algorithm, get the tutorial version of the algorithm
- * from the same website you got this one (http://www.spatial.maine.edu/~kostas/dev/soft/munkres.htm)]
+ * from the same website you got this one (www.spatial.maine.edu/~kostas).]
  * 
  * Any comments, corrections, or additions would be much appreciated. 
  * Credit due to professor Bob Pilgrim for providing an online copy of the
@@ -40,7 +39,7 @@ package algorithms;
 import static java.lang.Math.*;
 import java.util.*;
 
-public class HungarianAlgorithm {
+public class HungarianAlgorithm2 {
 
 	//********************************//
 	//METHODS FOR CONSOLE INPUT-OUTPUT//
@@ -389,10 +388,10 @@ public class HungarianAlgorithm {
 		//at a prime with no star in its column. Unstar all stars and star the primes of the
 		//series. Erasy any other primes. Reset covers. Go to step 3.
 		
-		int count = 0;												//Counts rows of the path matrix.
-		int[][] path = new int[(mask[0].length*mask.length)][2];	//Path matrix (stores row and col).
-		path[count][0] = zero_RC[0];								//Row of last prime.
-		path[count][1] = zero_RC[1];								//Column of last prime.
+		int count = 0;										//Counts rows of the path matrix.
+		int[][] path = new int[(mask[0].length + 2)][2];	//Path matrix (stores row and col).
+		path[count][0] = zero_RC[0];						//Row of last prime.
+		path[count][1] = zero_RC[1];						//Column of last prime.
 		
 		boolean done = false;
 		while (done == false)
@@ -546,22 +545,22 @@ public class HungarianAlgorithm {
 	public static void main(String[] args) 
 	{
 		//Below enter "max" or "min" to find maximum sum or minimum sum assignment.
-		String sumType = "max";		
+		String sumType = "min";		
 				
 		//Hard-coded example.
-		//double[][] array =
-		//{
-		//		{1, 2, 3},
-		//		{2, 4, 6},
-		//		{3, 6, 9}
-		//};
+		double[][] array =
+		{
+				{1, 2, 3},
+				{2, 4, 6},
+				{3, 6, 9}
+		};
 		
-		//<UNCOMMENT> BELOW AND COMMENT BLOCK ABOVE TO USE A RANDOMLY GENERATED MATRIX
+		/*//<UNCOMMENT> BELOW AND COMMENT BLOCK ABOVE TO USE A RANDOMLY GENERATED MATRIX
 		int numOfRows = readInput("How many rows for the matrix? ");
 		int numOfCols = readInput("How many columns for the matrix? ");
 		double[][] array = new double[numOfRows][numOfCols];
 		generateRandomArray(array, "random");	//All elements within [0,1].
-		//</UNCOMMENT>
+		*///</UNCOMMENT>
 		
 		if (array.length > array[0].length)
 		{
@@ -570,16 +569,15 @@ public class HungarianAlgorithm {
 		}
 				
 		//<COMMENT> TO AVOID PRINTING THE MATRIX FOR WHICH THE ASSIGNMENT IS CALCULATED
-		System.out.println("\n(Printing out only 2 decimals)\n");
 		System.out.println("The matrix is:");
 		for (int i=0; i<array.length; i++)
 		{
 			for (int j=0; j<array[i].length; j++)
-				{System.out.printf("%.2f\t", array[i][j]);}
+				{System.out.printf("%.1f\t", array[i][j]);}
 			System.out.println();
 		}
 		System.out.println();
-		//</COMMENT>*/
+		//</COMMENT>
 		
 		double startTime = System.nanoTime();	
 		int[][] assignment = new int[array.length][2];
@@ -591,14 +589,14 @@ public class HungarianAlgorithm {
 		for (int i=0; i<assignment.length; i++)
 		{
 			//<COMMENT> to avoid printing the elements that make up the assignment
-			System.out.printf("array(%d,%d) = %.2f\n", (assignment[i][0]+1), (assignment[i][1]+1),
-					array[assignment[i][0]][assignment[i][1]]);
+			System.out.println("array(" + (assignment[i][0]+1) + "," + (assignment[i][1]+1) + ") = " 
+								+ array[assignment[i][0]][assignment[i][1]]);
 			sum = sum + array[assignment[i][0]][assignment[i][1]];
 			//</COMMENT>
 		}
 		
-		System.out.printf("\nThe %s is: %.2f\n", sumType, sum);
+		System.out.println("\nThe " + sumType + " sum is: " + sum);
 		printTime((endTime - startTime)/1000000000.0);
-		
+	
 	}
 }
