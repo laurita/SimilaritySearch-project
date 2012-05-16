@@ -37,8 +37,10 @@ public class StableMarriage {
 			boolean[] rejected = new boolean[nr_rows];
 			// reject all, but first choice proposals, unmark proposals and mark rejections
 			for (int j = 0; j < nr_cols; j++) {
+				// if the column has many proposals
 				if (StableMarriage.hasManyProposals(proposals, j)) {
 					best_proposal_index = findBestProposal(columnwise_ranks, proposals, j);
+					// unmark all, but the best proposal and mark them in rejections
 					for (int i = 0; i < nr_rows; i++) {
 						if (proposals[i][j] && i != best_proposal_index) {
 							proposals[i][j] = false;
@@ -83,8 +85,7 @@ public class StableMarriage {
 		
 		return M;
 	}
-	
-	
+		
 	private static int findMin(double[] array, boolean[] marked) {
 		double min = 2; // starting min value, because distance are <= 1
 		int min_i = 0;

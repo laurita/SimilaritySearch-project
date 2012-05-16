@@ -18,15 +18,22 @@ import algorithms.RNN;
 import algorithms.StableMarriage;
 
 public class SimSearch {
+	
+	public static void printSum(double[][] matrix, ArrayList<int[]> result) {
+		double sum = 0;
+		for (int i = 0, len = result.size(); i < len; i++) {
+			sum += matrix[result.get(i)[0]][result.get(i)[1]];
+		}
+		System.out.println("Sum is: " + sum);
+	}
 
 	public static void runtimetest() {
 
 		System.out.println("Testing runtime.");
-		//int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
-		int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
-				1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900};
-				//1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000,
-				//2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000};
+		int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
+		//int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
+		//		1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000,
+		//		2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000};
 		//int[] testsizes = new int[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
 		Timer timer = new Timer();
 		
@@ -220,7 +227,7 @@ public class SimSearch {
 							/ 100.0 + "%");
 
 			// calculating algorithm 4 (hungarian)
-			// *
+			//*
 			timer.startfresh();
 			result = new HungAlg(matrix.values).getMatches();
 			timer.stop();
@@ -233,7 +240,7 @@ public class SimSearch {
 					.println("Precision: "
 							+ Math.round(analyzer.getPrecision() * 10000)
 							/ 100.0 + "%");
-			// */
+			//*/
 
 			System.out.println("----------------");
 			System.out.println();
@@ -300,7 +307,7 @@ public class SimSearch {
 
 	public static void main(String[] args) {
 		runtimetest();
-		// qualitytest();
+		qualitytest();
 		/*
 		for (int i = 0; i < 100; i++) {
 			impltest(i);

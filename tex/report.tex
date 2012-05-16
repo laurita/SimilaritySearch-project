@@ -30,7 +30,7 @@ Required or not?
 
 \section{Introduction}
 
-In this project we discuss different techniques to match two groups of objects using a similarity matrix. Each object can be matched exactly once and matching is a symmetric property. This matching problems is of interest in a number of areas.
+When integrating data from different sources, the exact matches of data items representing the same real world object fail very often because of the missing global keys and/or different data representations. The solution is the approximate matching techniques. In this project we discuss different techniques to match two groups of objects using a similarity matrix. Each object can be matched exactly once and matching is a symmetric property. This matching problems is of interest in a number of areas.
 
 % do we want to add examples here (?)
 We implement and compare four matching algorithms: Reverse Nearest Neighbor, Global Greedy, Stable Marriage, and the Hungarian Algorithm. 
@@ -87,6 +87,8 @@ The details of the algorithm are not described here. However the basic idea is t
 
 \section{Experiments}
 
+The comparison of the algorithms include runtime and quality tests. In our runtime tests we use randomly generated distance data of different sizes, namely: $100, 200, \dots, 1000$. In the quality tests, we use Bolzano Address Tree distance data and compute recall and precision for all four algorithms.
+
 \subsection{Runtime Tests}
 
 In all graphs in this section the y-axis ($n$) represents the size of a $n \times n$ test-matrix. The matrix is generated using random double values as entries. We use a logarithmic scale for easier interpretation.
@@ -113,7 +115,119 @@ $\dots$
 
 The blue graph represents the runtime of our HA implementation. The orange curve is a fitted $x^4$ function.
 
+The results of the runtime experiment are provided in Table~\ref{runtimes}. It is clearly seen that because of its simplicity and the early exclusion of nonunique best matches, the Reverse Nearest Neighbour algorithm is the fastest one. The Global Greedy and the Stable Marriage algorithms are noticeably slower. One of the reasons is that the job they are performing differs a bit from the task the RNN is doing. GG and SM are making as many matches as possible, even when there are nonunique smallest distances. They both simply pick one of the possible matches. These two algorithms are also comparable because of the stability of their solutions.
+
+\begin{table}[tbh]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Size & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
+\hline 
+\hline 
+ 100 & 1 & 63 & 123 & 269\tabularnewline
+\hline
+ 200 & 22 & 159 & 131 & 640\tabularnewline
+\hline 
+ 300 & 0 & 90 & 232 & 1826\tabularnewline
+\hline 
+ 400 & 0 & 368 & 626 & 5243\tabularnewline
+\hline 
+ 500 & 2 & 235 & 1125 & 11415\tabularnewline
+\hline 
+ 600 & 4 & 276 & 1868 & 26197\tabularnewline
+\hline 
+ 700 & 5 & 440 & 2887 & 43786\tabularnewline
+\hline
+ 800 & 8 & 961 & 6699 & 85837\tabularnewline
+\hline 
+ 900 & 11 & 1269 & 10921 & 135179\tabularnewline
+\hline
+ 1000 & 17 & 1673 & 11681 & 217143\tabularnewline
+\hline 
+\end{tabular}
+\caption{Running times for different sizes.}
+\label{runtimes}
+\end{table}
+
+\begin{figure}[ht!]
+\centering 
+\includegraphics[width=8cm]{../graphs/rnn.pdf} 
+\caption{Running time of the Reverse Nearest Neighbour algorithm.}
+\label{rnn} 
+\end{figure}
+
+\begin{figure}[ht!]
+\centering 
+\includegraphics[width=8cm]{../graphs/gg.pdf} 
+\caption{Running time of the Grobal Greedy algorithm.}
+\label{gg} 
+\end{figure}
+
+\begin{figure}[ht!]
+\centering 
+\includegraphics[width=8cm]{../graphs/sm.pdf} 
+\caption{Running time of the Stable Marriage algorithm.}
+\label{sm} 
+\end{figure}
+
+\begin{figure}[ht!]
+\centering 
+\includegraphics[width=8cm]{../graphs/hung.pdf} 
+\caption{Running time of the Hungarian algorithm.}
+\label{hung} 
+\end{figure}
+
+
 \subsection{Quality Tests}
+
+The recall and precision values of all four algorithms for different datasets are provided in Table~\ref{recall} and Table~\ref{precision}. The interesting remark is that the recall values of GG, SM and Hungarian are very similar in all the cases, and especially of GG and SM. % Discuss the reasons
+
+The other noticeable thing is that for all the algorithms except RNN, the recall and precision values are always the same. Here the explanation is the nature of the algorithms: they always make $min(\#rows, \#columns)$ matches. Therefore the number of false positives becomes equal to the number of false negatives in the formulas of precision and recall. And thus, from the definitions of the precision and recall follows, that precision becomes equal to recall.
+
+
+\[P = \frac{tp}{tp+fp}, R = \frac{tp}{tp+fn}.\]
+
+\[fp=fn \Rightarrow R=P.\]
+
+\begin{table}[tbh]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Data File & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
+\hline 
+\hline 
+ Np3q2.dm & 79.26\% & 85.95\% & 86.29\% & 86.29\%\tabularnewline
+\hline
+ Nw3p2q.dm & 80.27\% & 89.3\% & 89.3\% & 89.97\%\tabularnewline
+\hline 
+ Nw5p1q.dm & 81.94\% & 92.64\% & 92.64\% & 92.98\%\tabularnewline
+\hline 
+ Nw8p2q.dm & 82.94\% & 89.97\% & 89.97\% & 89.63\%\tabularnewline
+\hline
+\end{tabular}
+\caption{Recall of different algorithms for different data.}
+\label{recall}
+\end{table}
+
+\begin{table}[tbh]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Data File & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
+\hline 
+\hline 
+ Np3q2.dm & 99.16\% & 85.95\% & 86.29\% & 86.29\%\tabularnewline
+\hline
+ Nw3p2q.dm & 98.77\% & 89.3\% & 89.3\% & 89.97\%\tabularnewline
+\hline 
+ Nw5p1q.dm & 98.79\% & 92.64\% & 92.64\% & 92.98\%\tabularnewline
+\hline 
+ Nw8p2q.dm & 98.41\% & 89.97\% & 89.97\% & 89.63\%\tabularnewline
+\hline
+\end{tabular}
+\caption{Precision of different algorithms for different data.}
+\label{precision}
+\end{table}
 
 \section{Conclusions}
 
@@ -131,7 +245,7 @@ Ph.D. Dissertation, Department of Computer Science Faculty of Engineering and Sc
 Gale D.; Shapley L. S., College Admissions and the Stability of Marriage, The American Mathematical Monthly,  69(1): 9â€“15, 1962.
 
 \bibitem{rnn}
-Nikolaus Augsten and Michael Böhlen and Johann Gamper: The pq-Gram Distance between Ordered Labeled Trees, Free University of Bozen-Bolzano, 2010 
+Nikolaus Augsten and Michael B?hlen and Johann Gamper: The pq-Gram Distance between Ordered Labeled Trees, Free University of Bozen-Bolzano, 2010 
 
 \bibitem{ha_firstpub}
 Munkres, James: Algorithms for the Assignment and Transportation Problems, Journal of the Society for Industrial and Applied Mathematics, 5(1): pp. 32-38, Mar., 1957
