@@ -18,7 +18,9 @@ public class StabMarrTest {
 		// to test if this throws errors
 		// ArrayList<int[]> assignment1 = new algorithms.HungAlg(matrix).getMatches();
 		// doesn't throw errors (obviously!)
-		// ArrayList<int[]> assignment1 = algorithms.GlobalGreedy.match(matrix);		
+		// ArrayList<int[]> assignment1 = algorithms.GlobalGreedy.match(matrix);	
+		// not throwing errors (of course)
+		// ArrayList<int[]> assignment1 = algorithms.RNN.match(matrix);
 		
 		// check that the result is stable
 		boolean error = false;
