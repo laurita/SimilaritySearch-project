@@ -223,7 +223,7 @@ public class SimSearch {
 							/ 100.0 + "%");
 
 			// calculating algorithm 4 (hungarian)
-			// *
+			//*
 			timer.startfresh();
 			result = new HungAlg(matrix.values).getMatches();
 			timer.stop();
@@ -236,7 +236,7 @@ public class SimSearch {
 					.println("Precision: "
 							+ Math.round(analyzer.getPrecision() * 10000)
 							/ 100.0 + "%");
-			// */
+			//*/
 
 			System.out.println("----------------");
 			System.out.println();
@@ -302,8 +302,8 @@ public class SimSearch {
 	}
 
 	public static void main(String[] args) {
-		// runtimetest();
-		// qualitytest();
+		runtimetest();
+		qualitytest();
 		//*
 		for (int i = 0; i < 100; i++) {
 			impltest(i);
