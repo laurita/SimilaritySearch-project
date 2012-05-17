@@ -91,6 +91,7 @@ The comparison of the algorithms include runtime and quality tests. In our runti
 
 \subsection{Runtime Tests}
 
+<<<<<<< HEAD
 In all graphs in this section the y-axis ($n$) represents the size of a $n \times n$ test-matrix. The matrix is generated using random double values as entries. We use a logarithmic scale for easier interpretation.
 
 \subsubsection{Reverse Nearest Neighbor}
@@ -114,7 +115,7 @@ $\dots$
 \includegraphics[width=106mm]{HA_runtime.png}
 
 The blue graph represents the runtime of our HA implementation. The orange curve is a fitted $x^4$ function.
-
+=======
 The results of the runtime experiment are provided in Table~\ref{runtimes}. It is clearly seen that because of its simplicity and the early exclusion of nonunique best matches, the Reverse Nearest Neighbour algorithm is the fastest one. The Global Greedy and the Stable Marriage algorithms are noticeably slower. One of the reasons is that the job they are performing differs a bit from the task the RNN is doing. GG and SM are making as many matches as possible, even when there are nonunique smallest distances. They both simply pick one of the possible matches. These two algorithms are also comparable because of the stability of their solutions.
 
 \begin{table}[tbh]
@@ -177,6 +178,7 @@ Size & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 \label{hung} 
 \end{figure}
 
+>>>>>>> 83541f2d37abf9fbae43b35d8cc3ba00ada1135a
 
 \subsection{Quality Tests}
 
@@ -245,7 +247,7 @@ Ph.D. Dissertation, Department of Computer Science Faculty of Engineering and Sc
 Gale D.; Shapley L. S., College Admissions and the Stability of Marriage, The American Mathematical Monthly,  69(1): 9–15, 1962.
 
 \bibitem{rnn}
-Nikolaus Augsten and Michael B?hlen and Johann Gamper: The pq-Gram Distance between Ordered Labeled Trees, Free University of Bozen-Bolzano, 2010 
+Nikolaus Augsten and Michael B�hlen and Johann Gamper: The pq-Gram Distance between Ordered Labeled Trees, Free University of Bozen-Bolzano, 2010 
 
 \bibitem{ha_firstpub}
 Munkres, James: Algorithms for the Assignment and Transportation Problems, Journal of the Society for Industrial and Applied Mathematics, 5(1): pp. 32-38, Mar., 1957
