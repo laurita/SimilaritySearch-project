@@ -12,7 +12,7 @@ public class GlobalGreedy {
 	// Nikolaus Augsten, Approximate Matching of Hierarchical Data, Ph.D. Dissertation
 	
 	// sorts the absolute similarity entries and picks the smallest possible as
-	// a match until it can not assign anymore.
+	// a match until it cannot assign anymore.
 	
 	public static ArrayList<int[]> match(double[][] matrix) {
 		ArrayList<int[]> M = new ArrayList<int[]>();
