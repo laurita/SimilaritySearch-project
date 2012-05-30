@@ -15,8 +15,16 @@ public class StableMarriageNew {
 	// Preference tables (size nr_men x nr_women)
 	private int[][] manPref;
     private int[][] womanPref;
+    
+    boolean transposed = false;
 	
 	public StableMarriageNew(double[][] distances) {
+		
+		if (distances.length < distances[0].length) {
+			distances = MatrixTools.transpose(distances);
+			transposed = true;
+		}
+		
 		double[][] transposedDistances = MatrixTools.transpose(distances);
 		this.nr_men = distances.length;
 		this.nr_women = distances[0].length;
@@ -106,7 +114,12 @@ public class StableMarriageNew {
 		}
 		ArrayList<int[]> result = new ArrayList<int[]>();
 		for (int i = 0; i < current.length; i++) {
-			result.add(new int[]{i, current[i]});
+			if (transposed) {
+				System.out.println(current[i] + " to " + i);
+				result.add(new int[]{current[i], i});
+			} else {
+				result.add(new int[]{i, current[i]});
+			}
 		}
 		return result;	
 	}
