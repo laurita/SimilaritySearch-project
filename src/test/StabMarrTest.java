@@ -13,6 +13,11 @@ public class StabMarrTest {
 		boolean result = true;
 		
 		// create result for our implementation
+//		int[] tmp = new external.StableMarriage(matrix).stable();
+//		ArrayList<int[]> assignment1 = new ArrayList<int[]>();
+//		for (int i = 0; i < tmp.length; i++) {
+//			assignment1.add(new int[]{i, tmp[i]});
+//		}
 		ArrayList<int[]> assignment1 = algorithms.StableMarriage.match(matrix);
 		
 		// to test if this throws errors

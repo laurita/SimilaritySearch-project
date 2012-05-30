@@ -6,6 +6,7 @@ import general.MatrixGenerator;
 import general.Timer;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -107,6 +108,7 @@ public class SimSearch {
 			if (useSM) {
 				timer.startfresh();
 				//new StableMarriage2(testsizes[i]);
+				//new external.StableMarriage(matrix.values).stable();
 				StableMarriage.match(matrix.values);
 				timer.stop();
 				SM[i] = new int[] {testsizes[i], (int) timer.getTime()};
@@ -121,7 +123,7 @@ public class SimSearch {
 			//*
 			if (useHA) {
 				timer.startfresh();
-				//HungarianAlgorithm2.hgAlgorithm(matrix.values, "min");
+				//(new HungarianAlgorithm3()).computeAssignments(matrix.values);
 				new HungAlg(matrix.values).getMatches();
 				timer.stop();
 				HA[i] = new int[] {testsizes[i], (int) timer.getTime()};
@@ -253,7 +255,9 @@ public class SimSearch {
 
 			// calculating algorithm 3 (stable marriage)
 			timer.startfresh();
+			
 			result = StableMarriage.match(matrix.values);
+			
 			timer.stop();
 			System.out.println("Stable Marriage took " + timer.getTime()
 					+ " ms.");
@@ -377,12 +381,19 @@ public class SimSearch {
 			runtimetest(start, stepsize, steps, algorithms);
 		}
 		
-		//runtimetest();
-		//qualitytest();
 		/*
 		for (int i = 0; i < 100; i++) {
 			impltest(i);
 		}
 		//*/
+		
+		// wait for user input to close
+		try {
+			System.out.println("Press Enter to exit.");
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
