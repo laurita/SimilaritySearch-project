@@ -15,8 +15,16 @@ public class StableMarriageNew {
 	// Preference tables (size nr_men x nr_women)
 	private int[][] manPref;
     private int[][] womanPref;
+    
+    boolean transposed = false;
 	
 	public StableMarriageNew(double[][] distances) {
+		
+		if (distances.length < distances[0].length) {
+			distances = MatrixTools.transpose(distances);
+			transposed = true;
+		}
+		
 		double[][] transposedDistances = MatrixTools.transpose(distances);
 		this.nr_men = distances.length;
 		this.nr_women = distances[0].length;
@@ -68,7 +76,7 @@ public class StableMarriageNew {
 		return false;
 	}
 	
-	public int[] stable() {
+	public ArrayList<int[]> stable() {
 		// Indicates that woman i is currently engaged to
 		// the man v[i].
 		int[] current = new int[nr_women];
@@ -104,44 +112,53 @@ public class StableMarriageNew {
 		    	}
 		    }	    
 		}
-		return current;	
+		ArrayList<int[]> result = new ArrayList<int[]>();
+		for (int i = 0; i < current.length; i++) {
+			if (transposed) {
+				System.out.println(current[i] + " to " + i);
+				result.add(new int[]{current[i], i});
+			} else {
+				result.add(new int[]{i, current[i]});
+			}
+		}
+		return result;	
 	}
 	
 	
-	private static void printMatrix(int[][] v) {
-		if (v == null) {
-		    System.out.println("<null>");
-		    return;
-		}
-		for (int i = 0; i < v.length; i++) {
-		    for (int j = 0; j < v[i].length; j++) {
-		    	System.out.print(v[i][j] + " ");
-		    }
-		    System.out.println();
-		}
-	}
+//	private static void printMatrix(int[][] v) {
+//		if (v == null) {
+//		    System.out.println("<null>");
+//		    return;
+//		}
+//		for (int i = 0; i < v.length; i++) {
+//		    for (int j = 0; j < v[i].length; j++) {
+//		    	System.out.print(v[i][j] + " ");
+//		    }
+//		    System.out.println();
+//		}
+//	}
 	
-	private static void printMarriage(int[] m) {
-		System.out.println("Married couples (woman + man): ");
-		for (int i = 0; i < m.length; i++) {
-		    System.out.println(i + " + " + m[i]);
-		}
-	}
-	public static void main(String[] args) {
-		double[][] matrix = new double[][] {
-				{0.12,0.19,0.8,0.15},
-				{0.10,0.18,0.7,0.17},
-				{0.13,0.16,0.9,0.14},
-				{0.12,0.19,0.8,0.18},
-				{0.14,0.17,0.10,0.19}
-		};
-		
-		StableMarriageNew stableMarriage = new StableMarriageNew(matrix);
-		System.out.println("Men Preferrences:");
-		printMatrix(stableMarriage.manPref);
-		System.out.println("Women Preferrences:");
-		printMatrix(stableMarriage.womanPref);
-		System.out.println("Matches:");
-		printMarriage(stableMarriage.stable());
-	}
+//	private static void printMarriage(int[] m) {
+//		System.out.println("Married couples (woman + man): ");
+//		for (int i = 0; i < m.length; i++) {
+//		    System.out.println(i + " + " + m[i]);
+//		}
+//	}
+//	public static void main(String[] args) {
+//		double[][] matrix = new double[][] {
+//				{0.12,0.19,0.8,0.15},
+//				{0.10,0.18,0.7,0.17},
+//				{0.13,0.16,0.9,0.14},
+//				{0.12,0.19,0.8,0.18},
+//				{0.14,0.17,0.10,0.19}
+//		};
+//		
+//		StableMarriageNew stableMarriage = new StableMarriageNew(matrix);
+//		System.out.println("Men Preferrences:");
+//		printMatrix(stableMarriage.manPref);
+//		System.out.println("Women Preferrences:");
+//		printMatrix(stableMarriage.womanPref);
+//		System.out.println("Matches:");
+//		printMarriage(stableMarriage.stable());
+//	}
 }

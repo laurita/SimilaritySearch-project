@@ -1,6 +1,8 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import util.ArrayTools;
 import util.MatrixTools;
@@ -85,55 +87,95 @@ public class StableMarriage {
 		
 		return M;
 	}
-		
-	private static int findMin(double[] array, boolean[] marked) {
-		double min = 2; // starting min value, because distance are <= 1
-		int min_i = 0;
-		for (int i = 0; i < array.length; i++) {
-			if (!marked[i] && array[i] < min) {
-				min_i = i;
-				min = array[i];
-			}
-		}
-		return min_i;
-	}
 	
-	private static int[][] rankRowwise(double[][] distances) {
-		int nr_cols = distances[0].length;
-		int nr_rows = distances.length;
-		int[][] rowwise_ranks = new int[nr_rows][nr_cols];
-		for (int i = 0; i < nr_rows; i++) {
-			boolean[] marked = new boolean[nr_cols]; ;
-			double[] row = distances[i];
-			int min_index;
-			for (int j = 1; j <= nr_cols; j++) {
-				min_index = findMin(row, marked);
-				marked[min_index] = true;
-				rowwise_ranks[i][min_index] = j;
-			}
+	// make row as preference
+	private static int[] asPref(double[] row) {
+		int[] result = new int[row.length];
+		ArrayList<double[]> tmp = new ArrayList<double[]>();
+		for (int i = 0; i < row.length; i++) {
+			tmp.add(new double[] { i, row[i] });
 		}
-		return rowwise_ranks;
+		Collections.sort(tmp, new Comparator<Object>() {
+			public int compare(Object o1, Object o2) {
+				double[] p1 = (double[]) o1;
+				double[] p2 = (double[]) o2;
+				return (int) Math.signum(p1[1] - p2[1]);
+			}
+		});
+		for (int i = 0, len = tmp.size(); i < len; i++) {
+			//System.out.println((int) (tmp.get(i)[0] + 1) + " <- " + tmp.get(i)[1]);
+			result[(int) (tmp.get(i)[0])] = i;
+		}
+		return result;
 	}
 	
 	private static int[][] rankColumnwise(double[][] distances) {
-		int nr_cols = distances[0].length;
-		int nr_rows = distances.length;
-		int[][] columnwise_ranks = new int[nr_rows][nr_cols];
-		for (int j = 0; j < nr_cols; j++) {
-			boolean[] marked = new boolean[nr_rows]; ;
-			double[] column = new double[nr_rows];
-			for (int i = 0; i < nr_rows; i++) {
-				column[i] = distances[i][j];
-			}
-			int min_index;
-			for (int i = 1; i <= nr_rows; i++) {
-				min_index = findMin(column, marked);
-				marked[min_index] = true;
-				columnwise_ranks[min_index][j] = i;
-			}
+		double[][] tmp = MatrixTools.transpose(distances);
+		
+		int[][] transResult = new int[tmp.length][tmp[0].length];
+		for (int i = 0; i < tmp.length; i++) {
+			transResult[i] = asPref(tmp[i]);
 		}
-		return columnwise_ranks;
+
+		return MatrixTools.transpose(transResult);
 	}
+			
+	private static int[][] rankRowwise(double[][] distances) {
+		int[][] result = new int[distances.length][distances[0].length];
+		for (int i = 0; i < distances.length; i++) {
+			result[i] = asPref(distances[i]);
+		}
+		return result;
+	}
+	
+//	private static int findMin(double[] array, boolean[] marked) {
+//		double min = 2; // starting min value, because distance are <= 1
+//		int min_i = 0;
+//		for (int i = 0; i < array.length; i++) {
+//			if (!marked[i] && array[i] < min) {
+//				min_i = i;
+//				min = array[i];
+//			}
+//		}
+//		return min_i;
+//	}
+//	
+//	private static int[][] rankRowwise(double[][] distances) {
+//		int nr_cols = distances[0].length;
+//		int nr_rows = distances.length;
+//		int[][] rowwise_ranks = new int[nr_rows][nr_cols];
+//		for (int i = 0; i < nr_rows; i++) {
+//			boolean[] marked = new boolean[nr_cols]; ;
+//			double[] row = distances[i];
+//			int min_index;
+//			for (int j = 1; j <= nr_cols; j++) {
+//				min_index = findMin(row, marked);
+//				marked[min_index] = true;
+//				rowwise_ranks[i][min_index] = j;
+//			}
+//		}
+//		return rowwise_ranks;
+//	}
+	
+//	private static int[][] rankColumnwise(double[][] distances) {
+//		int nr_cols = distances[0].length;
+//		int nr_rows = distances.length;
+//		int[][] columnwise_ranks = new int[nr_rows][nr_cols];
+//		for (int j = 0; j < nr_cols; j++) {
+//			boolean[] marked = new boolean[nr_rows]; ;
+//			double[] column = new double[nr_rows];
+//			for (int i = 0; i < nr_rows; i++) {
+//				column[i] = distances[i][j];
+//			}
+//			int min_index;
+//			for (int i = 1; i <= nr_rows; i++) {
+//				min_index = findMin(column, marked);
+//				marked[min_index] = true;
+//				columnwise_ranks[min_index][j] = i;
+//			}
+//		}
+//		return columnwise_ranks;
+//	}
 	
 	private static boolean hasManyProposals(boolean[][] proposals, int col_index) {
 		int count = 0; 

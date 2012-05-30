@@ -6,6 +6,7 @@ import general.MatrixGenerator;
 import general.Timer;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,8 +18,10 @@ import util.ReaderTool;
 import algorithms.GlobalGreedy;
 import algorithms.HungAlg;
 import algorithms.RNN;
-import algorithms.StableMarriage;
-import algorithms.StableMarriageNew;
+import algorithms.StableMarriage_v3;
+
+// adapted pseudocode from 
+// http://en.wikipedia.org/wiki/Stable_marriage_problem
 
 public class SimSearch {
 	
@@ -108,22 +111,14 @@ public class SimSearch {
 			if (useSM) {
 				timer.startfresh();
 				//new StableMarriage2(testsizes[i]);
-				StableMarriage.match(matrix.values);
+				//new external.StableMarriage(matrix.values).stable();
+				new StableMarriage_v3(matrix.values).compute();
 				timer.stop();
 				SM[i] = new int[] {testsizes[i], (int) timer.getTime()};
 				System.out.println("Stable Marriage took " + timer.getTime()
 						+ " ms.");
 			}
 			// */
-			
-			
-			timer.startfresh();
-			StableMarriageNew stableMarriage = new StableMarriageNew(matrix.values);
-			stableMarriage.stable();
-			timer.stop();
-			SM[i] = new int[] {testsizes[i], (int) timer.getTime()};
-			System.out.println("Stable Marriage New took " + timer.getTime()
-					+ " ms.");
 
 			// running algorithm 4 (hungarian)
 			// runtime is n^4, but all other implementation also have the same runtime
@@ -131,7 +126,7 @@ public class SimSearch {
 			//*
 			if (useHA) {
 				timer.startfresh();
-				//HungarianAlgorithm2.hgAlgorithm(matrix.values, "min");
+				//(new HungarianAlgorithm3()).computeAssignments(matrix.values);
 				new HungAlg(matrix.values).getMatches();
 				timer.stop();
 				HA[i] = new int[] {testsizes[i], (int) timer.getTime()};
@@ -264,7 +259,9 @@ public class SimSearch {
 
 			// calculating algorithm 3 (stable marriage)
 			timer.startfresh();
-			result = StableMarriage.match(matrix.values);
+			
+			result = new StableMarriage_v3(matrix.values).compute();
+			
 			timer.stop();
 			System.out.println("Stable Marriage took " + timer.getTime()
 					+ " ms.");
@@ -388,12 +385,19 @@ public class SimSearch {
 			runtimetest(start, stepsize, steps, algorithms);
 		}
 		
-		//runtimetest();
-		//qualitytest();
 		/*
 		for (int i = 0; i < 100; i++) {
 			impltest(i);
 		}
 		//*/
+		
+		// wait for user input to close
+		try {
+			System.out.println("Press Enter to exit.");
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

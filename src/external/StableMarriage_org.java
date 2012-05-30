@@ -9,7 +9,7 @@ import java.util.*;
  * @author Stefan Nilsson
  * @version 2008.10.23
  */
-public class StableMarriage2
+public class StableMarriage_org
 {
     // Number of men (=number of women)
     private int n ;
@@ -24,7 +24,7 @@ public class StableMarriage2
     /**
      * Creates a marriage problem of size n with random preferences.
      */
-    public StableMarriage2(int n) {
+    public StableMarriage_org(int n) {
 	this.n = n;
 	manPref = new int[n][];
 	womanPref = new int[n][];

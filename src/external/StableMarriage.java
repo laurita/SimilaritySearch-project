@@ -14,6 +14,9 @@ import util.MatrixTools;
  * @author Stefan Nilsson
  * @version 2008.10.23
  */
+/**
+ * Modified version to make it compatible with our input.
+ */
 public class StableMarriage {
 	// Number of men (=number of women)
 	private int n;
@@ -27,21 +30,22 @@ public class StableMarriage {
 	boolean transposed = false;
 	
 	// make row as preference
-	private int[] asPref(double[] row) {
+	private static int[] asPref(double[] row) {
 		int[] result = new int[row.length];
 		ArrayList<double[]> tmp = new ArrayList<double[]>();
 		for (int i = 0; i < row.length; i++) {
-			tmp.add(new double[]{i, row[i]});
+			tmp.add(new double[] { i, row[i] });
 		}
-		Collections.sort(tmp, new Comparator<Object>(){ 
-	        public int compare(Object o1, Object o2) {
-	        	double[] p1 = (double[]) o1;
-	        	double[] p2 = (double[]) o2;
-	            return (int) Math.signum(p1[1] - p2[1]);
-	        }
-	    });
+		Collections.sort(tmp, new Comparator<Object>() {
+			public int compare(Object o1, Object o2) {
+				double[] p1 = (double[]) o1;
+				double[] p2 = (double[]) o2;
+				return (int) Math.signum(p1[1] - p2[1]);
+			}
+		});
 		for (int i = 0, len = tmp.size(); i < len; i++) {
-			result[i] = (int) (tmp.get(i)[0] + 1);
+			//System.out.println((int) (tmp.get(i)[0] + 1) + " <- " + tmp.get(i)[1]);
+			result[(int) (tmp.get(i)[0])] = i;
 		}
 		return result;
 	}
@@ -54,6 +58,8 @@ public class StableMarriage {
     		matrix = MatrixTools.transpose(matrix);
     		transposed = true;
     	}
+		
+		n = matrix.length;
 		
 		double[][] manPref;
 		double[][] womanPref;

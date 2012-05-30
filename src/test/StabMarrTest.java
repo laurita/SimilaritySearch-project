@@ -13,7 +13,16 @@ public class StabMarrTest {
 		boolean result = true;
 		
 		// create result for our implementation
-		ArrayList<int[]> assignment1 = algorithms.StableMarriage.match(matrix);
+//		int[] tmp = new external.StableMarriage(matrix).stable();
+//		ArrayList<int[]> assignment1 = new ArrayList<int[]>();
+//		for (int i = 0; i < tmp.length; i++) {
+//			assignment1.add(new int[]{i, tmp[i]});
+//		}
+//		ArrayList<int[]> assignment1 = new algorithms.StableMarriageNew(matrix).stable();
+		
+		//ArrayList<int[]> assignment1 = algorithms.StableMarriage.match(matrix);
+		
+		ArrayList<int[]> assignment1 = new algorithms.StableMarriage_v3(matrix).compute();
 		
 		// to test if this throws errors
 		// ArrayList<int[]> assignment1 = new algorithms.HungAlg(matrix).getMatches();
