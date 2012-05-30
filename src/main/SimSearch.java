@@ -5,6 +5,7 @@ import general.DataObj;
 import general.MatrixGenerator;
 import general.Timer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,6 +13,7 @@ import test.GlobalGreedyTest;
 import test.HungAlgTest;
 import test.RNNTest;
 import test.StabMarrTest;
+import util.ReaderTool;
 import algorithms.GlobalGreedy;
 import algorithms.HungAlg;
 import algorithms.RNN;
@@ -28,10 +30,33 @@ public class SimSearch {
 		System.out.println("Sum is: " + sum);
 	}
 
-	public static void runtimetest() {
+	public static void runtimetest(int start, int stepsize, int steps, String[] usedAlgorithms) {
 
+		boolean useRNN = false;
+		boolean useGG = false;
+		boolean useSM = false;
+		boolean useHA = false;
+		for (int i = 0; i < usedAlgorithms.length; i++) {
+			if (usedAlgorithms[i].equals("RNN")) {
+				useRNN = true;
+			}
+			if (usedAlgorithms[i].equals("GG")) {
+				useGG = true;
+			}
+			if (usedAlgorithms[i].equals("SM")) {
+				useSM = true;
+			}
+			if (usedAlgorithms[i].equals("HA")) {
+				useHA = true;
+			}
+		}
+		
 		System.out.println("Testing runtime.");
-		int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
+		int[] testsizes = new int[steps];
+		for (int i = 0; i < steps; i++) {
+			testsizes[i] = start + i * stepsize;
+		}
+		//int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
 		//int[] testsizes = new int[] { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
 		//		1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000,
 		//		2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000};
@@ -56,34 +81,39 @@ public class SimSearch {
 			// running algorithm 1 (Reverse neareast neighbour)
 			// runtime should be linear but is n^2
 			// but how can that be if the matrix is n x n ?!?!
-			/*
-			timer.startfresh();
-			algorithms.RNN.match(matrix.values);
-			timer.stop();
-			RNN[i] = new int[] {testsizes[i], (int) timer.getTime()};
-			System.out.println("RNN took " + timer.getTime() + " ms.");
+			if (useRNN) {
+				timer.startfresh();
+				algorithms.RNN.match(matrix.values);
+				timer.stop();
+				RNN[i] = new int[] {testsizes[i], (int) timer.getTime()};
+				System.out.println("RNN took " + timer.getTime() + " ms.");
+			}
 			// */
 
 			// running algorithm 2 (global greedy)
 			// note: runtime seems ok
-			/*
-			timer.startfresh();
-			GlobalGreedy.match(matrix.values);
-			timer.stop();
-			GG[i] = new int[] {testsizes[i], (int) timer.getTime()};
-			System.out.println("GG took " + timer.getTime() + " ms.");
-			*/
+			//*
+			if (useGG) {
+				timer.startfresh();
+				GlobalGreedy.match(matrix.values);
+				timer.stop();
+				GG[i] = new int[] {testsizes[i], (int) timer.getTime()};
+				System.out.println("GG took " + timer.getTime() + " ms.");
+			}
+			// */
 
 			// running algorithm 3 (stable marriage)
 			// runtime should be n^2 (see example) but is n^3
-			/*
-			timer.startfresh();
-			//new StableMarriage2(testsizes[i]);
-			StableMarriage.match(matrix.values);
-			timer.stop();
-			SM[i] = new int[] {testsizes[i], (int) timer.getTime()};
-			System.out.println("Stable Marriage took " + timer.getTime()
-					+ " ms.");
+			//*
+			if (useSM) {
+				timer.startfresh();
+				//new StableMarriage2(testsizes[i]);
+				StableMarriage.match(matrix.values);
+				timer.stop();
+				SM[i] = new int[] {testsizes[i], (int) timer.getTime()};
+				System.out.println("Stable Marriage took " + timer.getTime()
+						+ " ms.");
+			}
 			// */
 			
 			
@@ -98,50 +128,61 @@ public class SimSearch {
 			// running algorithm 4 (hungarian)
 			// runtime is n^4, but all other implementation also have the same runtime
 			// not sure how this can be reduced to n^3
-			/*
-			timer.startfresh();
-			//HungarianAlgorithm2.hgAlgorithm(matrix.values, "min");
-			new HungAlg(matrix.values).getMatches();
-			timer.stop();
-			HA[i] = new int[] {testsizes[i], (int) timer.getTime()};
-			System.out.println("Hungarian took " + timer.getTime() + " ms.");
+			//*
+			if (useHA) {
+				timer.startfresh();
+				//HungarianAlgorithm2.hgAlgorithm(matrix.values, "min");
+				new HungAlg(matrix.values).getMatches();
+				timer.stop();
+				HA[i] = new int[] {testsizes[i], (int) timer.getTime()};
+				System.out.println("Hungarian took " + timer.getTime() + " ms.");
+			}
 			// */
 		}
 		System.out.println();
 		// print the maple output
 		System.out.println("############Maple###########");
 		System.out.print("with(plots):");
-		/*
-		System.out.print("RNN := [");
-		for (int i = 0; i < RNN.length; i++) {
-			System.out.print("[" + RNN[i][0] + ", " + RNN[i][1] + "]" + 
-					(i + 1 < RNN.length ? ", " : ""));
-			
+		//*
+		if (useRNN) {
+			System.out.print("RNN := [");
+			for (int i = 0; i < RNN.length; i++) {
+				System.out.print("[" + RNN[i][0] + ", " + RNN[i][1] + "]" + 
+						(i + 1 < RNN.length ? ", " : ""));
+				
+			}
+			System.out.print("]:");
 		}
-		System.out.print("]:");
-		*/
-		/*
-		System.out.print("GG := [");
-		for (int i = 0; i < GG.length; i++) {
-			System.out.print("[" + GG[i][0] + ", " + GG[i][1] + "]" + 
-					(i + 1 < GG.length ? ", " : ""));
-		}
-		System.out.print("]:");
-		*/
-		/*
-		System.out.print("SM := [");
-		for (int i = 0; i < SM.length; i++) {
-			System.out.print("[" + SM[i][0] + ", " + SM[i][1] + "]" + 
-					(i + 1 < GG.length ? ", " : ""));
-		}
-		System.out.print("]:");
+
+		//*/
 		
-		System.out.print("HA := [");
-		for (int i = 0; i < HA.length; i++) {
-			System.out.print("[" + HA[i][0] + ", " + HA[i][1] + "]" + 
-					(i + 1 < GG.length ? ", " : ""));
+		if (useGG) {
+			System.out.print("GG := [");
+			for (int i = 0; i < GG.length; i++) {
+				System.out.print("[" + GG[i][0] + ", " + GG[i][1] + "]" + 
+						(i + 1 < GG.length ? ", " : ""));
+			}
+			System.out.print("]:");
 		}
-		System.out.print("]:");
+		
+		//*
+		if (useSM) {
+			System.out.print("SM := [");
+			for (int i = 0; i < SM.length; i++) {
+				System.out.print("[" + SM[i][0] + ", " + SM[i][1] + "]" + 
+						(i + 1 < GG.length ? ", " : ""));
+			}
+			System.out.print("]:");
+		}
+		
+		if (useHA) {
+			System.out.print("HA := [");
+			for (int i = 0; i < HA.length; i++) {
+				System.out.print("[" + HA[i][0] + ", " + HA[i][1] + "]" + 
+						(i + 1 < GG.length ? ", " : ""));
+			}
+			System.out.print("]:");
+		}
 		//*/
 		
 		System.out.println("display({logplot(RNN, axis[2] = [gridlines], color = blue), logplot(GG, color = green), logplot(SM, color = black), logplot(HA)}, title = \"blue = RNN, green = GG, black = SM, red = HA\");");
@@ -149,10 +190,10 @@ public class SimSearch {
 		System.out.println("############################");
 	}
 
-	public static void qualitytest() {
+	public static void qualitytest(String[] data) {
 		// the files to test on
 		// String[] data = new String[] {"testmatrix2.txt"};
-		String[] data = new String[] { "Np3q2.dm", "Nw3p2q.dm", "Nw5p1q.dm", "Nw8p2q.dm" };
+		//String[] data = new String[] { "Np3q2.dm", "Nw3p2q.dm", "Nw5p1q.dm", "Nw8p2q.dm" };
 
 		// test for all the files
 		for (int i = 0; i < data.length; i++) {
@@ -316,8 +357,39 @@ public class SimSearch {
 	}
 
 	public static void main(String[] args) {
-		runtimetest();
-		qualitytest();
+		
+		System.out.println("Select mode (q = quality, r = runtime):");
+		if (ReaderTool.getString().equals("q")) {
+			System.out.println("Selected quality test.");		
+			System.out.println("Select matrix input files name (same folder). Separate files with \", \".");
+			System.out.println("Sample: \"Np3q2.dm, Nw3p2q.dm, Nw5p1q.dm, Nw8p2q.dm\"");
+			String[] matrixfiles = ReaderTool.getString().split(", ");
+			boolean error = false;
+			for (int i = 0; i < matrixfiles.length; i++) {
+				if (!new File(matrixfiles[i]).exists()) {
+					System.out.println("Error. Matrix file \"" + matrixfiles[i] + "\" not found.");
+					error = true;
+				}
+			}
+			if (!error) {
+				qualitytest(matrixfiles);
+			}
+		} else {
+			System.out.println("Selected runtime test.");
+			System.out.println("Enter n to start with:");
+			int start = ReaderTool.getNumber();
+			System.out.println("Enter stepsize:");
+			int stepsize = ReaderTool.getNumber();
+			System.out.println("Enter number of steps (minimum one):");
+			int steps = ReaderTool.getNumber();
+			System.out.println("Enter algorithms to use, pick from {RNN, GG, SM, HA}.");
+			System.out.println("Separate by \", \".");
+			String[] algorithms = ReaderTool.getString().split(", ");
+			runtimetest(start, stepsize, steps, algorithms);
+		}
+		
+		//runtimetest();
+		//qualitytest();
 		/*
 		for (int i = 0; i < 100; i++) {
 			impltest(i);
