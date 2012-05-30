@@ -19,6 +19,7 @@ import algorithms.GlobalGreedy;
 import algorithms.HungAlg;
 import algorithms.RNN;
 import algorithms.StableMarriage;
+import algorithms.StableMarriageNew;
 
 public class SimSearch {
 	
@@ -116,6 +117,15 @@ public class SimSearch {
 						+ " ms.");
 			}
 			// */
+			
+			
+			timer.startfresh();
+			StableMarriageNew stableMarriage = new StableMarriageNew(matrix.values);
+			stableMarriage.stable();
+			timer.stop();
+			SM[i] = new int[] {testsizes[i], (int) timer.getTime()};
+			System.out.println("Stable Marriage New took " + timer.getTime()
+					+ " ms.");
 
 			// running algorithm 4 (hungarian)
 			// runtime is n^4, but all other implementation also have the same runtime
@@ -145,6 +155,7 @@ public class SimSearch {
 			}
 			System.out.print("]:");
 		}
+
 		//*/
 		
 		if (useGG) {
