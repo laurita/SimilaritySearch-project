@@ -73,7 +73,9 @@ In the second stage those boys who were rejected now propose to their second cho
 
 We proceed in the same manner. Those who are rejected at the current stage propose to their next choices, and the girls again reject all but the best proposal they have had so far.
 
-\textit{//Can be proven that it terminates?}
+%\textit{//Can be proven that it terminates?}
+One question regarding the Stable Marriage algorithm is whether it can be proven that the algorithm terminates. Once a girl receives a proposal, she remains engaged, but may chenge her mind for a better proposal. Therefore, from the girls' point of view this algorithm is greedy. In every iteration a boy will eliminate one of his choices. As a result, if it continues for long enough, at some point there will be no girls left to propose. Therefore, at the end $min(\#girls, \#boys)$, i.e. the maximum number of pairs, will be matched and the algorithm terminates.
+
 
 \subsection{Hungarian Algorithm}
 
@@ -81,13 +83,14 @@ The algorithm was first published in \cite{ha_firstpub}.
 
 The basic idea is to assign the objects in such a way that the overall cost of all assignments is minimal, e.g. the sum of all used similarity values is minimal. This means that an object is not assigned to it's best match if the overall cost of all assignments can be reduced that way. The algorithm further matches as many pairs as possible.
 
-Our implementation, which runs in $O(n^4)$, is loosely based on the original algorithm and  \url{http://csclab.murraystate.edu/bob.pilgrim/445/munkres.html}. It is known that the algorithm can be implemented to run in $O(n^3)$, but for us the (well studied) original algorithm was sufficient.
+% I use capital N, because later I say that N is max(n,m)
+Our implementation, which runs in $O(N^4)$, is loosely based on the original algorithm and  \url{http://csclab.murraystate.edu/bob.pilgrim/445/munkres.html}. It is known that the algorithm can be implemented to run in $O(N^3)$, but for us the (well studied) original algorithm was sufficient.
 
 The details of the algorithm are not described here. However the basic idea is to decrease the size of the entries in the cost matrix in an intelligent way. When the algorithm terminates, there is a marked zeros for every match. 
 
 \section{Experiments}
 
-The comparison of the algorithms include runtime and quality tests. In our runtime tests we use randomly generated distance data of different sizes, namely: $100, 200, \dots, 1000$. In the quality tests, we use Bolzano Address Tree distance data and compute recall and precision for all four algorithms.
+The comparison of the algorithms includes runtime and quality tests. In our runtime tests we use randomly generated distance data of increasing size. In the quality tests, we use Bolzano Address Tree distance data and compute recall and precision for all four algorithms.
 
 \subsection{Runtime Tests}
 
@@ -102,7 +105,7 @@ In all graphs in this section the y-axis ($n$) represents the size of a $n \time
 \label{rnn} 
 \end{figure}
 
-The blue graph in Figure~\ref{rnn} represents the runtime of our RNN implementation. The orange curve is a fitted $x^2$ function. As expected, the complexity of the algorithm is $O(n^{2})$.
+The blue graph in Figure~\ref{rnn} represents the runtime of our RNN implementation. The orange curve is a fitted $x^2$ function. As expected, the complexity of the algorithm is $O(N^{2})$.
 
 \subsubsection{Global Greedy}
 
@@ -113,7 +116,7 @@ The blue graph in Figure~\ref{rnn} represents the runtime of our RNN implementat
 \label{gg} 
 \end{figure}
 
-The blue graph in Figure~\ref{gg} represents the runtime of our GG implementation. The orange curve is a fitted $x^2 \cdot log(x)$ function. As expected, the complexity of the algorithm is $O(n^{2} \cdot log(n))$.
+The blue graph in Figure~\ref{gg} represents the runtime of our GG implementation. The orange curve is a fitted $x^2 \cdot log(x)$ function. As expected, the complexity of the algorithm is $O(N^{2} \cdot log(N))$, which comes from sorting the distances.
 
 \subsubsection{Stable Marriage}
 
@@ -124,6 +127,8 @@ The blue graph in Figure~\ref{gg} represents the runtime of our GG implementatio
 \label{sm} 
 \end{figure}
 
+The blue graph in Figure~\ref{sm} represents the runtime of our Stable Marriage algotithm implementation. The orange curve is a fitted $x^2 \cdot log(x)$ function. As expected, the complexity of the algorithm is $O(N^{2} \cdot log(N))$, which comes from the rowwise and columnwise rankings. If the distance matrix is $n$x$m$, then to sort one row it takes $m \cdot log(m)$ time. Similarly, to sort one column, it takes $n \cdot log(n)$ time. Therefore, the sorting takes $m \cdot n \cdot log(n) + n \cdot m \cdot log(m)$. Thus, if we denote the maximum of $n$ and $m$ by $N$, the time required for sorting is $O(N^{2} \cdot log(N))$. Because the complexity of the original algorithm was proven to be $N^{2}$, the application of such a problem to this particular case adds some complexity, which is, on the other hand, very negligible.
+
 \subsubsection{Hungarian Algorithm}
 
 \begin{figure}[ht!]
@@ -133,9 +138,12 @@ The blue graph in Figure~\ref{gg} represents the runtime of our GG implementatio
 \label{hung} 
 \end{figure}
 
-The blue graph in Figure~\ref{hung} represents the runtime of our HA implementation. The orange curve is a fitted $x^4$ function. As expected, the complexity of the algorithm is $O(n^{4})$.
+The blue graph in Figure~\ref{hung} represents the runtime of our HA implementation. The orange curve is a fitted $x^4$ function. As expected, the complexity of the algorithm is $O(n^{4})$. Even if it was mentioned in the before that it is possible to implement the Hungarian Algorithm in $O(n^{3})$, our experimants with the implementation that claimed to achieve $O(n^{3})$, did not prove to do it.
 
-The results of the runtime experiment are provided in Table~\ref{runtimes}. It is clearly seen that because of its simplicity and the early exclusion of nonunique best matches, the Reverse Nearest Neighbour algorithm is the fastest one. The Global Greedy and the Stable Marriage algorithms are noticeably slower. One of the reasons is that the job they are performing differs a bit from the task the RNN is doing. GG and SM are making as many matches as possible, even when there are nonunique smallest distances. They both simply pick one of the possible matches. These two algorithms are also comparable because of the stability of their solutions.
+The higher complexity compared to the other matching algorithms is because the Hungarian algorithm aims to assign the objects in such a way that the overall cost of all assignments is minimal, i.e. to find the optimal solution, whereas the others do not ensure it. This strong charasteristic of the solution again comes with its cost - the noticeably higher complexity.
+
+\subsubsection{Comparison of the Running Times}
+The results of the runtime experiment are provided in Table~\ref{runtimes}. It is clearly seen that because of its simplicity and the early exclusion of nonunique best matches, the Reverse Nearest Neighbour algorithm is the fastest one. The Global Greedy and the Stable Marriage algorithms are noticeably slower. One of the reasons is that the job they are performing differs a bit from the task the RNN is doing. GG and SM are making as many matches as possible, even when there are nonunique smallest distances. They both simply pick one of the possible matches. Moreover, GG and SM ensure the stable matching wi=hich comes with a cost. These two algorithms are comparable because of the stability of their solutions.
 
 \begin{table}[tbh]
 \centering
@@ -171,10 +179,13 @@ Size & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 
 \subsection{Quality Tests}
 
-The recall and precision values of all four algorithms for different datasets are provided in Table~\ref{recall} and Table~\ref{precision}. The interesting remark is that the recall values of GG, SM and Hungarian are very similar in all the cases, and especially of GG and SM. % Discuss the reasons
+The recall and precision values of all four algorithms for different datasets are provided in Table~\ref{recall} and Table~\ref{precision}. The interesting remark is that the recall values of GG, SM and Hungarian are very similar in all the cases. Recall values of GG and SM are even equal. % Discuss the reasons
+The reason for it might be the fact that both algorithms, GG and SM, aim to find the stabe solution. In our case, when the preferrences are acquired after ranking the distances, it is highly credible that the solutions are unique and therefore the same for both algorithms. Even though, we strogly believe in such a claim, we could not come up with a formal proof.
+% Again, the discussion above is quite sloppy. Add something if you can think of.
 
-The other noticeable thing is that for all the algorithms except RNN, the recall and precision values are always the same. Here the explanation is the nature of the algorithms: they always make $min(\#rows, \#columns)$ matches. Therefore the number of false positives becomes equal to the number of false negatives in the formulas of precision and recall. And thus, from the definitions of the precision and recall follows, that precision becomes equal to recall.
+The other noticeable thing is that for all the algorithms except RNN, the recall value is equal to the precision value. Here the explanation is the nature of the algorithms: they always make $min(\#rows, \#columns)$ matches. Therefore the number of false positives becomes equal to the number of false negatives in the formulas of precision and recall. And thus, from the definitions of the precision and recall follows, that precision becomes equal to recall.
 
+% Read and say whether you agree. I am not totally sure about it.
 
 \[P = \frac{tp}{tp+fp}, R = \frac{tp}{tp+fn}.\]
 
@@ -187,13 +198,13 @@ The other noticeable thing is that for all the algorithms except RNN, the recall
 Data File & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 \hline 
 \hline 
- Np3q2.dm & 79.26\% & 85.95\% &  & 86.29\%\tabularnewline
+ Np3q2.dm & 79.26\% & 85.95\% & 85.95\% & 86.29\%\tabularnewline
 \hline
- Nw3p2q.dm & 80.27\% & 89.3\% &  & 89.97\%\tabularnewline
+ Nw3p2q.dm & 80.27\% & 89.3\% & 89.3\% & 89.97\%\tabularnewline
 \hline 
- Nw5p1q.dm & 81.94\% & 92.64\% &  & 92.98\%\tabularnewline
+ Nw5p1q.dm & 81.94\% & 92.64\% & 92.64\% & 92.98\%\tabularnewline
 \hline 
- Nw8p2q.dm & 82.94\% & 89.97\% &  & 89.63\%\tabularnewline
+ Nw8p2q.dm & 82.94\% & 89.97\% & 89.97\% & 89.63\%\tabularnewline
 \hline
 \end{tabular}
 \caption{Recall of different algorithms for different data.}
@@ -207,13 +218,13 @@ Data File & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 Data File & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 \hline 
 \hline 
- Np3q2.dm & 99.16\% & 85.95\% &  & 86.29\%\tabularnewline
+ Np3q2.dm & 99.16\% & 85.95\% & 85.95\% & 86.29\%\tabularnewline
 \hline
- Nw3p2q.dm & 98.77\% & 89.3\% &  & 89.97\%\tabularnewline
+ Nw3p2q.dm & 98.77\% & 89.3\% & 89.3\% & 89.97\%\tabularnewline
 \hline 
- Nw5p1q.dm & 98.79\% & 92.64\% &  & 92.98\%\tabularnewline
+ Nw5p1q.dm & 98.79\% & 92.64\% & 92.64\% & 92.98\%\tabularnewline
 \hline 
- Nw8p2q.dm & 98.41\% & 89.97\% &  & 89.63\%\tabularnewline
+ Nw8p2q.dm & 98.41\% & 89.97\% & 89.97\% & 89.63\%\tabularnewline
 \hline
 \end{tabular}
 \caption{Precision of different algorithms for different data.}
@@ -221,6 +232,16 @@ Data File & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 \end{table}
 
 \section{Conclusions}
+
+To sum up, even if all four algorithms seem to perform a similar task, they a quite different. The stronger the claim about the solution the algorithm can ensure, the more it pays in complexity. The lowest compexity is acquired by the RRN, which does not guarantee neither the stability, nor the optimality of the solution. A slight increase in complexity is added with the guaranteed stability of the solution. This is acquired by the GG and SM algorithms, which are not only very similar in their complexity and speed, but also equal in the quality measures, such as recall and precision.
+
+The strongest guarantee of the matching is optimality of the solution. This is gained by the Hungarian algorithm which is the most sophisticated among the ones analysed in the project. Again, there is no such thing as free lunch. If you get more guarantees about the solution (in this case the optimality), you have to pay somehow (in this case $O(n^{4})$ complexity).
+
+The experimental results regarding the quality measures suggest the following conclusions. First of all, the highest precision is acquired by the RNN algorithm. The reason is that it matches only if the match is unique and best. Therefore, it leaves out many possible, but not uniquely best matches. This results in the noticeably lower recall values.
+
+In our eperiments the precision and recall values of GG and SM are always the same. At first appearance it seems like a strange coincidence. However, it is explainable by the inherent similarity of the algorithms and their guaranteed characteristic of the solution.
+
+The values of the quality measures for the Hungarian algorithm were also very close to the values of GG and SM. Still, there is a slight increase in most cases in both precision and recall. The reason is the optimality of the solution. If it claims to find the best solution possible, it has to somehow outperform the previous algorithms. And even if the main advantage of it is the promised optimality, i.e. the guarantee that the sum of the distances of the matche is the smallest possible, it is also noticeable that there exists a marginal improvement in the quality measures.
 
 \section{Manual}
 

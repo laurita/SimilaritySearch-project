@@ -18,7 +18,7 @@ import util.ReaderTool;
 import algorithms.GlobalGreedy;
 import algorithms.HungAlg;
 import algorithms.RNN;
-import algorithms.StableMarriage_v3;
+import algorithms.StableMarriage;
 
 // adapted pseudocode from 
 // http://en.wikipedia.org/wiki/Stable_marriage_problem
@@ -112,7 +112,7 @@ public class SimSearch {
 				timer.startfresh();
 				//new StableMarriage2(testsizes[i]);
 				//new external.StableMarriage(matrix.values).stable();
-				new StableMarriage_v3(matrix.values).compute();
+				new StableMarriage(matrix.values).getMatches();
 				timer.stop();
 				SM[i] = new int[] {testsizes[i], (int) timer.getTime()};
 				System.out.println("Stable Marriage took " + timer.getTime()
@@ -260,7 +260,7 @@ public class SimSearch {
 			// calculating algorithm 3 (stable marriage)
 			timer.startfresh();
 			
-			result = new StableMarriage_v3(matrix.values).compute();
+			result = new StableMarriage(matrix.values).getMatches();
 			
 			timer.stop();
 			System.out.println("Stable Marriage took " + timer.getTime()
