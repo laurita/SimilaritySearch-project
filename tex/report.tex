@@ -73,7 +73,9 @@ In the second stage those boys who were rejected now propose to their second cho
 
 We proceed in the same manner. Those who are rejected at the current stage propose to their next choices, and the girls again reject all but the best proposal they have had so far.
 
-\textit{//Can be proven that it terminates?}
+%\textit{//Can be proven that it terminates?}
+One question regarding the Stable Marriage algorithm is whether it can be proven that the algorithm terminates. Once a girl receives a proposal, she remains engaged, but may chenge her mind for a better proposal. Therefore, from the girls' point of view this algorithm is greedy. In every iteration a boy will eliminate one of his choices. As a result, if it continues for long enough, at some point there will be no girls left to propose. Therefore, at the end $min(\#girls, \#boys)$, i.e. the maximum number of pairs, will be matched and the algorithm terminates.
+
 
 \subsection{Hungarian Algorithm}
 
@@ -87,7 +89,7 @@ The details of the algorithm are not described here. However the basic idea is t
 
 \section{Experiments}
 
-The comparison of the algorithms include runtime and quality tests. In our runtime tests we use randomly generated distance data of different sizes, namely: $100, 200, \dots, 1000$. In the quality tests, we use Bolzano Address Tree distance data and compute recall and precision for all four algorithms.
+The comparison of the algorithms includes runtime and quality tests. In our runtime tests we use randomly generated distance data of different sizes, namely: $100, 200, \dots, 1000$. In the quality tests, we use Bolzano Address Tree distance data and compute recall and precision for all four algorithms.
 
 \subsection{Runtime Tests}
 
