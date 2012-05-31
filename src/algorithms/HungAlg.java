@@ -2,7 +2,6 @@ package algorithms;
 
 import java.util.ArrayList;
 
-import util.ArrayTools;
 import util.MatrixTools;
 
 // the main issue described ~minute 37
@@ -59,24 +58,6 @@ public class HungAlg {
 		return true;
 	}
 
-	// print a matrix
-	@SuppressWarnings("unused")
-	private void printMatrix() {
-		for (int i = 0; i < colCov.length; i++) {
-			System.out.print("   " + colCov[i]);
-		}
-		System.out.println();
-		for (int i = 0; i < matrix.length; i++) {
-			System.out.print(rowCov[i]);
-			for (int j = 0; j < matrix[0].length; j++) {
-				System.out.print(" " + (int) matrix[i][j] + "[" + blank[i][j]
-						+ "]");
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-
 	// find a starred element in this row
 	private int findStarInRow(int row) {
 		for (int i = 0; i < matrix[row].length; i++) {
@@ -107,37 +88,6 @@ public class HungAlg {
 		return result;
 	}
 	
-	/*
-	// find a zero that is not covered
-	private int[] findNonCovZero() {
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; rowCov[i] == 0 && j < matrix[0].length; j++) {
-				if (colCov[j] == 0) {
-					if (matrix[i][j] == 0) {
-						return new int[] { i, j };
-					}
-				}
-			}
-		}
-		return new int[] { -1, -1 };
-	}
-
-	// find the smallest uncovered item
-	private double findSmallestUncovItem() {
-		double value = -1;
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; rowCov[i] == 0 && j < matrix[0].length; j++) {
-				if (colCov[j] == 0) {
-					if (value == -1 || value > matrix[i][j]) {
-						value = matrix[i][j];
-					}
-				}
-			}
-		}
-		return value;
-	}
-	*/
-	
 	// find starred zero in column
 	private int findStarredZeroInCol(int col) {
 		for (int i = 0; i < matrix.length; i++) {
@@ -159,6 +109,8 @@ public class HungAlg {
 	}
 
 	// #############################################
+	// ################## Helper End ###############
+	// #############################################
 
 	public HungAlg(double[][] matrixInp) {
 		/*
@@ -169,18 +121,16 @@ public class HungAlg {
 		 */
 		boolean needToInvert = false;
 		if (matrixInp[0].length < matrixInp.length) {
-			matrix = MatrixTools.transpose(ArrayTools.cloneMatrix(matrixInp));
+			matrix = MatrixTools.transpose(MatrixTools.cloneMatrix(matrixInp));
 			needToInvert = true;
 		} else {
-			matrix = ArrayTools.cloneMatrix(matrixInp);
+			matrix = MatrixTools.cloneMatrix(matrixInp);
 		}
 
 		/* prepare: init all as unmarked */
 		blank = new int[matrix.length][matrix[0].length];
 		colCov = new int[matrix[0].length];
 		rowCov = new int[matrix.length];
-
-		printStep(0);
 
 		/*
 		 * Step 1: For each row of the matrix, find the smallest element and
@@ -189,8 +139,6 @@ public class HungAlg {
 		for (int i = 0; i < matrix.length; i++) {
 			matrix[i] = subtractSV(matrix[i]);
 		}
-
-		printStep(1);
 
 		/*
 		 * Step 2: Find a zero (Z) in the resulting matrix. If there is no
@@ -206,8 +154,6 @@ public class HungAlg {
 			}
 		}
 		int step = 3;
-		printStep(2);
-		// tmp last zero
 		int[] lastzero = null;
 		
 		while (step != 0) {
@@ -233,7 +179,6 @@ public class HungAlg {
 				} else {
 					step = 4;
 				}
-				printStep(3);
 				break;
 			case 4:
 				/*
@@ -248,7 +193,6 @@ public class HungAlg {
 				while (!done) {
 					int[] zero = findSmallestUncovItem();
 					lastzero = zero;
-					// System.out.println(zero[0] + ", " + zero[1]);
 					if (zero[0] != -1 && matrix[zero[0]][zero[1]] == 0) {
 						blank[zero[0]][zero[1]] = 2;
 						int starred = findStarInRow(zero[0]);
@@ -265,7 +209,6 @@ public class HungAlg {
 						step = 6;
 					}
 				}
-				printStep(4);
 				break;
 			case 5:
 				/*
@@ -281,7 +224,7 @@ public class HungAlg {
 				 */
 				boolean loop = true;
 				ArrayList<int[]> series = new ArrayList<int[]>();
-				int[] Z0 = lastzero;//findNonCovZero();
+				int[] Z0 = lastzero;
 				series.add(Z0);
 				while (loop) {
 					int Z1 = findStarredZeroInCol(Z0[1]);
@@ -302,7 +245,6 @@ public class HungAlg {
 					if (blank[series.get(i)[0]][series.get(i)[1]] == 2) {
 						blank[series.get(i)[0]][series.get(i)[1]] = 1;
 					}
-					//System.out.println(series.get(i)[0] + ", " + series.get(i)[1]);
 				}
 				
 				// erase all primes
@@ -322,11 +264,9 @@ public class HungAlg {
 					rowCov[i] = 0;
 				}
 				
-				printStep(5);
 				step = 3;
 				break;
 			case 6:
-				// unclear - what if there was no value found?
 				/*
 				 * Step 6: Add the value found in Step 4 to every element of
 				 * each covered row, and subtract it from every element of each
@@ -335,7 +275,6 @@ public class HungAlg {
 				 */
 				// find the smallest value
 				double minval = matrix[lastzero[0]][lastzero[1]];
-				// System.out.println(minval);
 				for (int i = 0; i < matrix.length; i++) {
 					for (int j = 0; j < matrix[0].length; j++) {
 						if (rowCov[i] == 1) {
@@ -346,7 +285,6 @@ public class HungAlg {
 						}
 					}
 				}
-				printStep(6);
 				step = 4;
 				break;
 			}
@@ -374,13 +312,6 @@ public class HungAlg {
 			}
 		}
 
-	}
-
-	private void printStep(int i) {
-		/*
-		System.out.println("step " + i);
-		printMatrix();
-		*/
 	}
 
 	public ArrayList<int[]> getMatches() {

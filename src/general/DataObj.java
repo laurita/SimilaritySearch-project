@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+/* holds a distance matrix in a way that it is easy to access it */
+
 public class DataObj {
 	
 	public final double[][] values;

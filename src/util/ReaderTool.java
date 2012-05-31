@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/* Basic class to read input from the console input */
+
 public class ReaderTool {
 	// get a string from the input
 	public static String getString() {

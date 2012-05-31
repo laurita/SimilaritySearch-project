@@ -1,12 +1,14 @@
-package test;
+package tests;
 
 import java.util.ArrayList;
+
+import util.TestTools;
 
 import external.HungarianAlgorithm;
 
 /* 
  * This class is for testing our implementation of the 
- * hungarian algorithm against
+ * hungarian and testing it against
  * an implementation that we found online. 
  */
 
@@ -17,7 +19,6 @@ public class HungAlgTest {
 		double sum = 0;
 		for (int i = 0, len = solution.size(); i < len; i++) {
 			sum += matrix[solution.get(i)[0]][solution.get(i)[1]];
-			//System.out.println("[" + solution.get(i)[0] + ", " + solution.get(i)[1] + "]");
 		}
 		return sum;
 	}
@@ -31,13 +32,13 @@ public class HungAlgTest {
 		ArrayList<int[]> assignment1 = new algorithms.HungAlg(matrix)
 				.getMatches();
 		
-		// do sanity check
-		if (!SanityTest.doCheck(assignment1)) {
+		// do solution sanity check
+		if (!TestTools.doCheck(assignment1)) {
 			System.out.println("Sanity check failed for Hungarian Algorithm");
 			result = false;
 		}
 		
-		// result for imported implementation
+		// get result for external implementation
 		ArrayList<int[]> assignment2 = new ArrayList<int[]>();
 		{
 			int[][] tmp = new HungarianAlgorithm().computeAssignments(matrix);
@@ -47,14 +48,16 @@ public class HungAlgTest {
 			}
 		}
 		
-		// check for correctness
+		// the result might not be the same, but the score should
+		// be the same (except for rounding errors)
+		// also the size should be the same
 		if (assignment1.size() != assignment2.size()
 				|| Math.abs(getScore(matrix, assignment1) - getScore(matrix,
 						assignment2)) > 0.00000000001) {
+			System.out.println("Solution score/size of external implementation " +
+					"differs for Hungarian Algorithm");
 			result = false;
 		}
-		//System.out.println(getScore(matrix, assignment1) + " vs " + getScore(matrix, assignment2));
-		//System.out.println(assignment1.size() + " vs " + assignment2.size());
 		
 		return result;
 	}

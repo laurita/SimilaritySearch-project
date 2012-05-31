@@ -3,7 +3,8 @@ package general;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
-// this class generates randomly distance matrix files
+/* this class generates randomly distance matrix files and objects */
+
 public class MatrixGenerator {
 	// generate a random data object
 	public static DataObj generate(int sizex, int sizey) {

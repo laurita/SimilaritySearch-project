@@ -2,7 +2,7 @@ package general;
 
 import java.util.ArrayList;
 
-// class that can print basic stuff
+/* class that can print matrixes and results */
 
 public class Printer {
 	// prints the results

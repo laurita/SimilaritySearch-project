@@ -1,29 +1,15 @@
-package test;
+package util;
 
 import java.util.ArrayList;
 
-/* 
- * This class is for testing our implementation of the 
- * stable marriage against
- * an implementation that we found online. 
- */
+/* contains basic checks */
 
-public class StabMarrTest {
-	public static boolean test(double[][] matrix) {
-		boolean result = true;
-		
-		// create result for our implementation		
-		ArrayList<int[]> assignment1 = new algorithms.StableMarriage(matrix).getMatches();
-		
-		// to test if this throws errors
-		// ArrayList<int[]> assignment1 = new algorithms.HungAlg(matrix).getMatches();
-		// doesn't throw errors (obviously!)
-		// ArrayList<int[]> assignment1 = algorithms.GlobalGreedy.match(matrix);	
-		// not throwing errors (of course)
-		// ArrayList<int[]> assignment1 = algorithms.RNN.match(matrix);
-		
-		// check that the result is stable
+public class TestTools {
+	
+	// check that the result is stable w.r. to the matrix
+	public static boolean isStable(ArrayList<int[]> assignment1, double[][] matrix) {
 		boolean error = false;
+		boolean result = true;
 		for (int i = 0, len = assignment1.size(); i < len; i++) {
 			double value = matrix[assignment1.get(i)[0]][assignment1.get(i)[1]];
 			error = false;
@@ -71,37 +57,29 @@ public class StabMarrTest {
 			
 			if (error) {
 				System.out.println("Unstable at " + assignment1.get(i)[0] + ", " + assignment1.get(i)[1]);
-			}
-		}
-		
-		// do sanity check
-		if (!SanityTest.doCheck(assignment1)) {
-			System.out.println("Sanity check failed for Stable Marriage");
-			result = false;
-		}
-		
-		/*
-		// result for imported implementation
-		ArrayList<int[]> assignment2 = new ArrayList<int[]>();
-		{
-			int[] tmp = new external.StableMarriage(matrix).stable();
-			// convert
-			for (int i = 0; i < tmp.length; i++) {
-				assignment2.add(new int[] { i, tmp[i] });
-			}
-		}
-		
-		// compare
-		if (assignment1.size() != assignment2.size()) {
-			System.out.println(assignment2.size());
-			result = false;
-		}
-		for (int i = 0; i < Math.min(assignment1.size(), assignment2.size()); i++) {
-			if (assignment1.get(i)[0] != assignment2.get(i)[0] || assignment1.get(i)[1] != assignment2.get(i)[1]) {
 				result = false;
 			}
 		}
-		*/
+		return result;
+	}
+	
+	// basic check that the result makes sense:
+	// each row is matched to maximum one column and vice versa
+	public static boolean doCheck(ArrayList<int[]> matches) {
+		boolean result = true;
+		
+		ArrayList<Integer> rows = new ArrayList<Integer>();
+		ArrayList<Integer> cols = new ArrayList<Integer>();
+		
+		for (int i = 0; i < matches.size(); i++) {
+			if (!rows.contains(matches.get(i)[0]) && !cols.contains(matches.get(i)[1])) {
+				rows.add(matches.get(i)[0]);
+				cols.add(matches.get(i)[1]);
+			} else {
+				result = false;
+				break;
+			}
+		}
 		
 		return result;
 	}

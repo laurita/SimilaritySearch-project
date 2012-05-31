@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import util.ArrayTools;
+import util.MatrixTools;
 
 public class GlobalGreedy {
 
@@ -14,15 +14,18 @@ public class GlobalGreedy {
 	// sorts the absolute similarity entries and picks the smallest possible as
 	// a match until it cannot assign anymore.
 	
+	// returns the matches
 	public static ArrayList<int[]> match(double[][] matrix) {
 		ArrayList<int[]> M = new ArrayList<int[]>();
-		double[][] D = ArrayTools.cloneMatrix(matrix);
+		double[][] D = MatrixTools.cloneMatrix(matrix);
+		// add all the entries in the matrix
 		ArrayList<double[]> S = new ArrayList<double[]>();
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix[0].length; j++) {
 				S.add(new double[] {i, j, D[i][j]});
 			} 
 		}
+		// sort them
 		Collections.sort(S, new Comparator<Object>(){ 
 	        public int compare(Object o1, Object o2) {
 	        	double[] p1 = (double[]) o1;
@@ -33,6 +36,7 @@ public class GlobalGreedy {
 		boolean[] seen_row = new boolean[matrix.length]; 
 		boolean[] seen_col = new boolean[matrix[0].length]; 
 		int s = 0;
+		// loop through all values and assign match if possible
 		while (M.size() < Math.min(matrix.length, matrix[0].length)) {
 			double[] tuple = S.get(s);
 			int[] match = new int[2];
@@ -45,6 +49,7 @@ public class GlobalGreedy {
 			}
 			s++;
 		}
+		// return the result
 		return M;
 	}
 }

@@ -6,6 +6,9 @@ import java.util.Comparator;
 
 import util.MatrixTools;
 
+// adapted pseudocode from 
+// http://en.wikipedia.org/wiki/Stable_marriage_problem
+
 public class StableMarriage {
 
 	// possible proposals for man
@@ -84,20 +87,6 @@ public class StableMarriage {
 		return result;
 	}
 	
-//	//for testing
-//	public static void main(String[] args) {
-//		double[][] matrix = new double[][] { 
-//				{ 0.8, 0.7, 0.9, 1.3 },
-//				{ 0.7, 0.5, 0.9, 4.3 }, 
-//				{ 0.5, 0.7, 0.9, 4.2 } };
-//		//matrix = MatrixTools.transpose(matrix);
-//		StabMarrTest.test(matrix);
-//		ArrayList<int[]> result = new StableMarriage_v3(matrix).compute();
-//		for (int i = 0; i < result.size(); i++) {
-//			System.out.println(result.get(i)[0] + " -> " + result.get(i)[1]);
-//		}
-//	}
-	
 	public StableMarriage(double[][] distances) {
 		
 		// store distances
@@ -131,24 +120,6 @@ public class StableMarriage {
 		for (int i = 0; i < distancesTransp.length; i++) {
 			prefW.add(asPrefW(distancesTransp[i]));
 		}
-		
-		/*
-		// pseudocode
-		function stableMatching {
-		    Initialize all m \in M and w \in W to free
-		    while \exists free man m who still has a woman w to propose to {
-		       w = m's highest ranked such woman to whom he has not yet proposed
-		       if w is free
-		         (m, w) become engaged
-		       else some pair (m', w) already exists
-		         if w prefers m to m'
-		           (m, w) become engaged
-		           m' becomes free
-		         else
-		           (m', w) remain engaged
-		    }
-		}
-		 */
 		
 		// find free man m who still has a woman w to propose to
 		int cman = findMan();

@@ -2,7 +2,8 @@ package general;
 
 import java.util.ArrayList;
 
-// class that calculates recall and precision
+/* class that calculates recall and precision
+ * from DataObj and result arraylist */
 
 public class Analyzer {
 	
@@ -10,7 +11,7 @@ public class Analyzer {
 	protected final int relevantcount;
 	protected final DataObj matrix;
 	
-	// the data for this result
+	// the data for the current result
 	private int resultcount = 0;
 	private int relresultcount = 0;
 	
@@ -58,11 +59,6 @@ public class Analyzer {
 				relresultcount++;
 			}
 		}
-		
-		// for verification / testing
-		//System.out.println("resultcount " + resultcount);
-		//System.out.println("relresultcount " + relresultcount);
-		//System.out.println("relevantcount " + relevantcount);
 		
 	}
 	

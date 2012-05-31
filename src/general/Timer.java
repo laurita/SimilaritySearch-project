@@ -1,5 +1,7 @@
 package general;
 
+/* basic timer class to measure code execution time in ms */
+
 public class Timer {
 	protected long time = 0;
 	protected long start = 0;

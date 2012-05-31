@@ -33,12 +33,10 @@
  */
 package external;
 
-import javolution.util.FastSet;
-
 import java.util.Arrays;
 import java.util.Set;
 
-import util.ArrayTools;
+import javolution.util.FastSet;
 import util.MatrixTools;
 
 /**
@@ -68,7 +66,7 @@ public class HungarianAlgorithm {
 
     public int[][] originalComputeAssignments(double[][] matrixInp) {
         //assert matrix[0].length <= matrix.length : "Do not process matrices where cols > rows!";
-    	double[][] matrix = ArrayTools.cloneMatrix(matrixInp);
+    	double[][] matrix = MatrixTools.cloneMatrix(matrixInp);
     	boolean transposed = false;
     	if (matrix[0].length > matrix.length) {
     		matrix = MatrixTools.transpose(matrix);
