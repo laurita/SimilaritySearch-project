@@ -47,6 +47,10 @@ public class QualityTest {
 					.println("Precision: "
 							+ Math.round(analyzer.getPrecision() * 10000)
 							/ 100.0 + "%");
+			System.out
+			.println("F1 Measure: "
+					+ Math.round(analyzer.getFMeasure() * 10000)
+					/ 100.0 + "%");
 
 			// calculating algorithm 2 (global greedy)
 			timer.startfresh();
@@ -61,6 +65,10 @@ public class QualityTest {
 					.println("Precision: "
 							+ Math.round(analyzer.getPrecision() * 10000)
 							/ 100.0 + "%");
+			System.out
+			.println("F1 Measure: "
+					+ Math.round(analyzer.getFMeasure() * 10000)
+					/ 100.0 + "%");
 
 			// calculating algorithm 3 (stable marriage)
 			timer.startfresh();
@@ -75,6 +83,10 @@ public class QualityTest {
 					.println("Precision: "
 							+ Math.round(analyzer.getPrecision() * 10000)
 							/ 100.0 + "%");
+			System.out
+			.println("F1 Measure: "
+					+ Math.round(analyzer.getFMeasure() * 10000)
+					/ 100.0 + "%");
 
 			// calculating algorithm 4 (hungarian)
 			timer.startfresh();
@@ -88,6 +100,10 @@ public class QualityTest {
 					.println("Precision: "
 							+ Math.round(analyzer.getPrecision() * 10000)
 							/ 100.0 + "%");
+			System.out
+			.println("F1 Measure: "
+					+ Math.round(analyzer.getFMeasure() * 10000)
+					/ 100.0 + "%");
 
 			System.out.println("----------------");
 			System.out.println();

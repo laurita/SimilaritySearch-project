@@ -69,4 +69,8 @@ public class Analyzer {
 	public double getRecall() {
 		return (double)relresultcount / relevantcount;
 	}
+	
+	public double getFMeasure() {
+		return 2 * this.getPrecision() * this.getRecall() / (this.getPrecision() + this.getRecall());
+	}
 }
