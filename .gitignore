@@ -6,3 +6,7 @@ tex/*.gz
 tex/*.pdf
 bin/
 .classpath
+presentation/*.aux
+presentation/*.log
+presentation/*.gz
+presentation/*.pdf
