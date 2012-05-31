@@ -51,7 +51,9 @@ public class RuntimeTest {
 			System.out.println("Testing for size "
 					+ String.valueOf(testsizes[i]) + ".");
 			System.out.print("Generating matrix...");
-			DataObj matrix = MatrixGenerator.generate(testsizes[i],
+			//DataObj matrix = MatrixGenerator.generate(testsizes[i],
+			//		testsizes[i]);
+			DataObj matrix = MatrixGenerator.generateZipf(testsizes[i],
 					testsizes[i]);
 			System.out.println("ok");
 			System.out.println("Running algorithms:");
