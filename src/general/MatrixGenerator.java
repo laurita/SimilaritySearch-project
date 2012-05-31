@@ -2,6 +2,7 @@ package general;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.Random;
 
 /* this class generates randomly distance matrix files and objects */
 
@@ -25,6 +26,40 @@ public class MatrixGenerator {
 
 		return new DataObj(matrix, rowNames, colNames);
 
+	}
+	
+	// generate a zipf distribution data abject
+	public static DataObj generateZipf(int sizex, int sizey) {
+		double[][] matrix = new double[sizex][sizey];
+		String[] rowNames = new String[sizey];
+		String[] colNames = new String[sizex];
+		Random rnd = new Random();
+		for (int i = 0; i < sizex; i++) {
+			for (int j = 0; j < sizey; j++) {
+				matrix[i][j] = zipf(rnd.nextInt(10));
+			}
+		}
+		for (int i = 0; i < sizex; i++) {
+			colNames[i] = String.valueOf(i);
+		}
+		for (int i = 0; i < sizex; i++) {
+			rowNames[i] = String.valueOf(i);
+		}
+		return new DataObj(matrix, rowNames, colNames);
+	}
+	
+	// return zipf cdf(x) with parameter value = 2
+	private static double zipf(double x) {
+		double RO = 2;
+		double harmonicNumber = 0;
+		double riemansZeta = 0;
+		for (int k = 1; k <= x; k++) {
+			harmonicNumber += 1.0 / Math.pow(k, (RO + 1));
+		}
+		for (int k = 1; k <= 100; k++) {
+			riemansZeta += 1.0 / Math.pow(k, (RO + 1));
+		}
+		return ((harmonicNumber / riemansZeta) > 0.99) ? 1 : (harmonicNumber / riemansZeta);
 	}
 
 	// write a random matrix file
