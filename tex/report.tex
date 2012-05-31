@@ -187,7 +187,7 @@ Size & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 
 \subsection{Quality Tests}
 
-The recall and precision values of all four algorithms for our different datasets\footnote{The datasets can be found here: \url{http://www.inf.unibz.it/dis/teaching/SS/} (Proposal 6)} are provided in Table~\ref{recall} and Table~\ref{precision}. 
+The recall, precision and F-1 measure values of all four algorithms for our different datasets\footnote{The datasets can be found here: \url{http://www.inf.unibz.it/dis/teaching/SS/} (Proposal 6)} are provided in Table~\ref{recall}, Table~\ref{precision} and Table~\ref{fmeasure} respectively. 
 
 The first thing we notice is that RNN has the highest precision, but a lower recall. This can be explained since it only matches two items if the other item is the unique best choice. The decision is not influences by other matches, resulting in high precision but low recall values (matches are not made if the algorithm is "unsure").
 
@@ -242,6 +242,26 @@ Data File & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 \end{tabular}
 \caption{Precision of different algorithms for different data.}
 \label{precision}
+\end{table}
+
+\begin{table}[tbh]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Data File & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
+\hline 
+\hline 
+ Np3q2.dm & 88.1\% & 85.95\% & 85.95\% & 86.29\%\tabularnewline
+\hline
+ Nw3p2q.dm & 88.56\% & 89.3\% & 89.3\% & 89.97\%\tabularnewline
+\hline 
+ Nw5p1q.dm & 89.58\% & 92.64\% & 92.64\% & 92.98\%\tabularnewline
+\hline 
+ Nw8p2q.dm & 90.02\% & 89.97\% & 89.97\% & 89.63\%\tabularnewline
+\hline
+\end{tabular}
+\caption{F-1 measure of different algorithms for different data.}
+\label{fmeasure}
 \end{table}
 
 \section{Conclusions}
