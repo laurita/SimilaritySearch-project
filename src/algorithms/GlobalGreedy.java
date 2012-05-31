@@ -37,13 +37,16 @@ public class GlobalGreedy {
 		boolean[] seen_col = new boolean[matrix[0].length]; 
 		int s = 0;
 		// loop through all values and assign match if possible
-		while (M.size() < Math.min(matrix.length, matrix[0].length)) {
+		int min = Math.min(matrix.length, matrix[0].length);
+		int count = 0;
+		while (count < min) {
 			double[] tuple = S.get(s);
 			int[] match = new int[2];
 			match[0] = (int) tuple[0];
 			match[1] = (int) tuple[1];
 			if (!seen_row[match[0]] && !seen_col[match[1]]) {
 				M.add(match);
+				count++;
 				seen_row[match[0]] = true;
 				seen_col[match[1]] = true;
 			}
