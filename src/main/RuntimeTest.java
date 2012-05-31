@@ -2,7 +2,6 @@ package main;
 
 import general.DataObj;
 import general.MatrixGenerator;
-import general.Printer;
 import general.Timer;
 import algorithms.GlobalGreedy;
 import algorithms.HungAlg;
