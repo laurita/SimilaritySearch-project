@@ -40,6 +40,9 @@ The differences of the matching algorithms are then discussed by performing runt
  
 % The comparison of algorithms include runtime and quality tests. In our runtime tests we use randomly generated distance data of different sizes, namely: 10, 100, 1000. In the quality tests, we use Bolzano Address Tree distance data and compute recall and precision for all the algorithms.
 
+\section{Motivation and Problem definition}
+\dots
+
 \section{Algorithms}
 
 \subsection{Reverse Nearest Neighbor}
@@ -63,18 +66,18 @@ The Global Greedy matching algorithm requires $O(N^2)$ space (the size of the di
 \subsection{Stable Marriage}
 
 % string -> object
-The Stable Marriage algorithm was first presented in \cite{gale}. One of the application examples was the assignments of students to the colleges given a quota for each college and the preferential rankings of both sides. The special case of a problem, when there is the same number of studends and colleges and all the quotas are unity was explained as a situation when the equal number of men and women seek for a partner based on their ranking lists.
+The Stable Marriage algorithm was first presented in \cite{gale}. One of the application examples was the assignments of students to the colleges given a quota for each college and the preferential rankings of both sides. The special case of a problem, when there is the same number of students and colleges and all the quotas are unity was explained as a situation when the equal number of men and women seek for a partner based on their ranking lists.
 
 The latter case is readily applicable for the string matching problem. The difference is that for matching strings the input is a distance matrices. Therefore, to use the algorithm the row-wise and column-wise rankings of the distances have to be calculated (the smaller the distance, the better the ranking).
 
-Further, the algorithm is identical to the original stable marriage. Suppose, that there are less columns than rows in the distence matrix. If not, then transpose the distance matrix and follow the same procedure. Also, imagine that rows represent boys, and columns represent girls. To start, each boy finds its best ranked girl. Each girl who receives more than one proposal rejects all but her favorite from among those who have proposed to her. However, she does not accept him yet, but keeps him on a string to allow for the possibility that someone better may come along later.
+Further, the algorithm is identical to the original stable marriage. Suppose, that there are less columns than rows in the distance matrix. If not, then transpose the distance matrix and follow the same procedure. Also, imagine that rows represent boys, and columns represent girls. To start, each boy finds its best ranked girl. Each girl who receives more than one proposal rejects all but her favorite from among those who have proposed to her. However, she does not accept him yet, but keeps him on a string to allow for the possibility that someone better may come along later.
 
 In the second stage those boys who were rejected now propose to their second choices. Each girl receiving proposals chooses her favorite from the group consisting of the new proposers and the boy on her string, if any. She rejects all the rest and again keeps the favorite in suspense.
 
 We proceed in the same manner. Those who are rejected at the current stage propose to their next choices, and the girls again reject all but the best proposal they have had so far.
 
 %\textit{//Can be proven that it terminates?}
-One question regarding the Stable Marriage algorithm is whether it can be proven that the algorithm terminates. Once a girl receives a proposal, she remains engaged, but may chenge her mind for a better proposal. Therefore, from the girls' point of view this algorithm is greedy. In every iteration a boy will eliminate one of his choices. As a result, if it continues for long enough, at some point there will be no girls left to propose. Therefore, at the end $min(\#girls, \#boys)$, i.e. the maximum number of pairs, will be matched and the algorithm terminates.
+One question regarding the Stable Marriage algorithm is whether it can be proven that the algorithm terminates. Once a girl receives a proposal, she remains engaged, but may change her mind for a better proposal. Therefore, from the girls' point of view this algorithm is greedy. In every iteration a boy will eliminate one of his choices. As a result, if it continues for long enough, at some point there will be no girls left to propose. Therefore, at the end $min(\#girls, \#boys)$, i.e. the maximum number of pairs, will be matched and the algorithm terminates.
 
 
 \subsection{Hungarian Algorithm}
@@ -87,6 +90,10 @@ The basic idea is to assign the objects in such a way that the overall cost of a
 Our implementation, which runs in $O(N^4)$, is loosely based on the original algorithm and  \url{http://csclab.murraystate.edu/bob.pilgrim/445/munkres.html}. It is known that the algorithm can be implemented to run in $O(N^3)$, but for us the (well studied) original algorithm was sufficient. Further it is noticeable that we did not find a Java implementation that runs in $O(N^3)$. An existing Java implementations\footnote{\url{http://konstantinosnedas.com/dev/soft/munkres.htm}} that claimed to achieve $O(n^{3})$, showed that it was in fact running in $O(n^{4})$.
 
 The details of the algorithm are not described here. However the basic idea is to decrease the size of the entries in the cost matrix in an intelligent way. When the algorithm terminates, there is a marked zeros for every match. 
+
+\section{Implementation testing}
+
+\dots
 
 \section{Experiments}
 
@@ -112,7 +119,7 @@ The blue graph in Figure~\ref{rnn} represents the runtime of our RNN implementat
 \begin{figure}[ht!]
 \centering 
 \includegraphics[width=80mm]{GG_runtime.png}
-\caption{The running time of the Global Greedy algotithm fitted to $x^2 \cdot log(x)$.}
+\caption{The running time of the Global Greedy algorithm fitted to $x^2 \cdot log(x)$.}
 \label{gg} 
 \end{figure}
 
@@ -123,11 +130,11 @@ The blue graph in Figure~\ref{gg} represents the runtime of our GG implementatio
 \begin{figure}[ht!]
 \centering 
 \includegraphics[width=80mm]{SM_runtime.png}
-\caption{The running time of the Stable Marriage algotithm fitted to $x^2 \cdot log(x)$.}
+\caption{The running time of the Stable Marriage algorithm fitted to $x^2 \cdot log(x)$.}
 \label{sm} 
 \end{figure}
 
-The blue graph in Figure~\ref{sm} represents the runtime of our Stable Marriage algotithm implementation. The orange curve is a fitted $x^2 \cdot log(x)$ function. As expected, the complexity of the algorithm is $O(N^{2} \cdot log(N))$, which comes from preparing the input matrix for the algorithm. We have to sort the rows and columns.
+The blue graph in Figure~\ref{sm} represents the runtime of our Stable Marriage algorithm implementation. The orange curve is a fitted $x^2 \cdot log(x)$ function. As expected, the complexity of the algorithm is $O(N^{2} \cdot log(N))$, which comes from preparing the input matrix for the algorithm. We have to sort the rows and columns.
 
   If the distance matrix is $n$x$m$, then to sort one row takes $m \cdot log(m)$ time. Similarly, to sort one column, it takes $n \cdot log(n)$ time. Therefore, the sorting takes $m \cdot n \cdot log(n) + n \cdot m \cdot log(m)$. Thus, if we denote the maximum of $n$ and $m$ by $N$, the time required for sorting is $O(N^{2} \cdot log(N))$. 
 
@@ -138,7 +145,7 @@ The complexity of the original algorithm was proven to be $N^{2}$. Hence we noti
 \begin{figure}[ht!]
 \centering 
 \includegraphics[width=80mm]{HA_runtime.png}
-\caption{The running time of the Hungarian algotithm fitted to $x^4$.}
+\caption{The running time of the Hungarian Algorithm fitted to $x^4$.}
 \label{hung} 
 \end{figure}
 
@@ -149,7 +156,7 @@ The higher complexity compared to the other matching algorithms is because the H
 \subsubsection{Comparison of the Running Times}
 The results of the runtime experiment are provided in Table~\ref{runtimes}. Our implementations are not optimal and hence it's hard to compare the absolute values. We still think that the implementations are good enough to allow for some basic deductions.
 
-It is clearly seen that because of its simplicity and the early exclusion of non-unique best matches, the Reverse Nearest Neighbour algorithm is the fastest one. The Global Greedy and the Stable Marriage algorithms are noticeable slower. One of the reasons is that the job they are performing differs a bit from the task the RNN is doing. GG and SM are making as many matches as possible, even when there are nonunique smallest distances. They both simply pick one of the possible matches. Moreover, GG and SM ensure the stable matching which comes with a cost. These two algorithms are comparable because of the stability of their solutions.
+It is clearly seen that because of its simplicity and the early exclusion of non-unique best matches, the Reverse Nearest Neighbor algorithm is the fastest one. The Global Greedy and the Stable Marriage algorithms are noticeable slower. One of the reasons is that their job differs a bit from the one RNN is doing. GG and SM are making as many matches as possible, even when there are non-unique smallest distances. They both simply pick one of the possible matches. Moreover, GG and SM ensure stable matching which comes with a cost. These two algorithms are comparable because of the stability of their solutions.
 
 The Hungarian Algorithm is by far the slowest, but since it's complexity is much higher we can not really compare it.
 
@@ -270,13 +277,13 @@ Data File & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 
 While all algorithms perform a similar task, they are quite different. There are certain features an algorithm can guarantee, but it then pays in complexity. The lowest complexity is acquired by the RRN, which does not guarantee stability or the optimality of the solution. GG and SM have a slightly increased complexity and guarantee the stability of the solution. The most expensive feature is global optimality, which is guaranteed by the Hungarian Algorithm. We notice that an optimal solution generally is not a stable one.
 
-The experimental results regarding the quality measures suggest the following conclusions. First of all, the highest precision is acquired by the RNN algorithm. The reason is that it matches only if the match is unique and best. Therefore, it leaves out many possible, but not uniquely best matches. This results in the noticeably lower recall values.
+In general we can say that the RNN is very good if you want to "be sure" about the matches you make. The other algorithms should be used if you want to make as many matches as possible. Our testing suggests that the result of the HA are slightly better than GG (or SM). However this is not always the case as \textit{Nw8p2q.dm} shows. In most cases the difference will not justify the \textit{much} higher complexity. 
 
-In our eperiments the precision and recall values of GG and SM are always the same. At first appearance it seems like a strange coincidence. However, it is explainable by the inherent similarity of the algorithms and their guaranteed characteristic of the solution.
-
-The values of the quality measures for the Hungarian algorithm were also very close to the values of GG and SM. Still, there is a slight increase in most cases in both precision and recall. The reason is the optimality of the solution. If it claims to find the best solution possible, it has to somehow outperform the previous algorithms. And even if the main advantage of it is the promised optimality, i.e. the guarantee that the sum of the distances of the matche is the smallest possible, it is also noticeable that there exists a marginal improvement in the quality measures.
+We conclude that neither optimality nor stability is the best property for making the matching. The algorithm you should choose should always depend on the data and your preferences.
 
 \section{Manual}
+
+\dots
 
 %-----------------------------------------------------------
 \addcontentsline{toc}{chapter}{\numberline{}Bibliography}

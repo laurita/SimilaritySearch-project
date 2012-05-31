@@ -49,7 +49,21 @@ public class MatrixGenerator {
 	}
 	
 	// return zipf cdf(x) with parameter value = 2
-	private static double zipf(double x) {
+	public static double zipf(int x) {
+		switch (x) {
+			case 0: return 0.0; 
+			case 1: return 0.8319416331806163; 
+			case 2: return 0.9359343373281933; 
+			case 3: return 0.9667469904089568; 
+			case 4: return 0.9797460784274039; 
+			case 5: return 0.9864016114928489; 
+			case 6: return 1.0; 
+			case 7: return 1.0; 
+			case 8: return 1.0; 
+			case 9: return 1.0; 
+		}
+		return 1.0;
+		/*
 		double RO = 2;
 		double harmonicNumber = 0;
 		double riemansZeta = 0;
@@ -60,6 +74,7 @@ public class MatrixGenerator {
 			riemansZeta += 1.0 / Math.pow(k, (RO + 1));
 		}
 		return ((harmonicNumber / riemansZeta) > 0.99) ? 1 : (harmonicNumber / riemansZeta);
+		*/
 	}
 
 	// write a random matrix file

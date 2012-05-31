@@ -2,6 +2,7 @@ package main;
 
 import general.DataObj;
 import general.MatrixGenerator;
+import general.Printer;
 import general.Timer;
 import algorithms.GlobalGreedy;
 import algorithms.HungAlg;
@@ -44,7 +45,6 @@ public class RuntimeTest {
 		int[][] GG = new int[testsizes.length][];
 		int[][] SM = new int[testsizes.length][];
 		int[][] HA = new int[testsizes.length][];
-
 		
 		// run tests for the different matrix sizes
 		for (int i = 0; i < testsizes.length; i++) {
@@ -55,6 +55,7 @@ public class RuntimeTest {
 			//		testsizes[i]);
 			DataObj matrix = MatrixGenerator.generateZipf(testsizes[i],
 					testsizes[i]);
+			//Printer.printMatrix(matrix);
 			System.out.println("ok");
 			System.out.println("Running algorithms:");
 
