@@ -30,11 +30,11 @@ Required or not?
 
 \section{Introduction}
 
-When integrating data from different sources, the exact matches of data items representing the same real world object fail very often because of the missing global keys and/or different data representations. The solution is the approximate matching techniques. In this project we discuss different techniques to match two groups of objects using a similarity matrix. Each object can be matched exactly once and matching is a symmetric property. This matching problem is of interest in a number of areas.
+When integrating data from different sources, the exact matching of data items representing the same real world object fails often because of the missing global keys and/or different data representations. In many cases these items have attributes that can be used to automatically generate similarity values for the cross product. The next question then is how to match the items using these similarity values. In this project we discuss different techniques for this matching using a similarity matrix. Each data item from one set can be matched at most to one data item from the other set and matching is a symmetric property. This matching problem is of interest in a number of areas.
 
 % do we want to add examples here (?)
 We implement and compare four matching algorithms: Reverse Nearest Neighbor, Global Greedy, Stable Marriage, and the Hungarian Algorithm. 
-The differences of the matching algorithms are then discussed by performing runtime and quality tests using our implementation. For the runtime tests we generate random matrices and for the quality test we use real-world data. In the last part we further clarify the differences by looking at particular, hand-crafted matrices.
+The differences of the matching algorithms are then discussed by performing runtime and quality tests using our implementation. For the runtime tests we generate random matrices and for the quality test we use real-world data.
 
 % The main objective is to match similar strings based on their distances. Possible applications include object identification in different databases, error correction in the text, finding matches for the queries with a spelling mistake \etc.
  
@@ -84,24 +84,24 @@ The algorithm was first published in \cite{ha_firstpub}.
 The basic idea is to assign the objects in such a way that the overall cost of all assignments is minimal, e.g. the sum of all used similarity values is minimal. This means that an object is not assigned to it's best match if the overall cost of all assignments can be reduced that way. The algorithm further matches as many pairs as possible.
 
 % I use capital N, because later I say that N is max(n,m)
-Our implementation, which runs in $O(N^4)$, is loosely based on the original algorithm and  \url{http://csclab.murraystate.edu/bob.pilgrim/445/munkres.html}. It is known that the algorithm can be implemented to run in $O(N^3)$, but for us the (well studied) original algorithm was sufficient.
+Our implementation, which runs in $O(N^4)$, is loosely based on the original algorithm and  \url{http://csclab.murraystate.edu/bob.pilgrim/445/munkres.html}. It is known that the algorithm can be implemented to run in $O(N^3)$, but for us the (well studied) original algorithm was sufficient. Further it is noticeable that we did not find a Java implementation that runs in $O(N^3)$. An existing Java implementations\footnote{\url{http://konstantinosnedas.com/dev/soft/munkres.htm}} that claimed to achieve $O(n^{3})$, showed that it was in fact running in $O(n^{4})$.
 
 The details of the algorithm are not described here. However the basic idea is to decrease the size of the entries in the cost matrix in an intelligent way. When the algorithm terminates, there is a marked zeros for every match. 
 
 \section{Experiments}
 
-The comparison of the algorithms includes runtime and quality tests. In our runtime tests we use randomly generated distance data of increasing size. In the quality tests, we use Bolzano Address Tree distance data and compute recall and precision for all four algorithms.
+The comparison of the algorithms includes runtime and quality tests. In our runtime tests we use randomly generated distance matrices of increasing size. In the quality tests, we use Bolzano Address Tree distance data and compute recall and precision for all four algorithms.
 
 \subsection{Runtime Tests}
 
-In all graphs in this section the y-axis ($n$) represents the size of a $n \times n$ test-matrix. The matrix is generated using random double values as entries. We use a logarithmic scale for easier interpretation.
+In all graphs in this section the y-axis ($n$) represents the size of a $n \times n$ test-matrix. The matrix is generated using random double values in $[0,1]$ as entries. We use a logarithmic scale for easier interpretation.
 
 \subsubsection{Reverse Nearest Neighbor}
 
 \begin{figure}[ht!]
 \centering 
 \includegraphics[width=80mm]{RNN_runtime.png}
-\caption{The running time of the Reverse Nearest Neighbor algotithm fitted to $x^2$.}
+\caption{The running time of the Reverse Nearest Neighbor algorithm fitted to $x^2$.}
 \label{rnn} 
 \end{figure}
 
@@ -127,7 +127,11 @@ The blue graph in Figure~\ref{gg} represents the runtime of our GG implementatio
 \label{sm} 
 \end{figure}
 
-The blue graph in Figure~\ref{sm} represents the runtime of our Stable Marriage algotithm implementation. The orange curve is a fitted $x^2 \cdot log(x)$ function. As expected, the complexity of the algorithm is $O(N^{2} \cdot log(N))$, which comes from the rowwise and columnwise rankings. If the distance matrix is $n$x$m$, then to sort one row it takes $m \cdot log(m)$ time. Similarly, to sort one column, it takes $n \cdot log(n)$ time. Therefore, the sorting takes $m \cdot n \cdot log(n) + n \cdot m \cdot log(m)$. Thus, if we denote the maximum of $n$ and $m$ by $N$, the time required for sorting is $O(N^{2} \cdot log(N))$. Because the complexity of the original algorithm was proven to be $N^{2}$, the application of such a problem to this particular case adds some complexity, which is, on the other hand, very negligible.
+The blue graph in Figure~\ref{sm} represents the runtime of our Stable Marriage algotithm implementation. The orange curve is a fitted $x^2 \cdot log(x)$ function. As expected, the complexity of the algorithm is $O(N^{2} \cdot log(N))$, which comes from preparing the input matrix for the algorithm. We have to sort the rows and columns.
+
+  If the distance matrix is $n$x$m$, then to sort one row takes $m \cdot log(m)$ time. Similarly, to sort one column, it takes $n \cdot log(n)$ time. Therefore, the sorting takes $m \cdot n \cdot log(n) + n \cdot m \cdot log(m)$. Thus, if we denote the maximum of $n$ and $m$ by $N$, the time required for sorting is $O(N^{2} \cdot log(N))$. 
+
+The complexity of the original algorithm was proven to be $N^{2}$. Hence we notice that applying the algorithm to our specific problem increases the complexity. The increase is not very significant though.
 
 \subsubsection{Hungarian Algorithm}
 
@@ -138,12 +142,16 @@ The blue graph in Figure~\ref{sm} represents the runtime of our Stable Marriage 
 \label{hung} 
 \end{figure}
 
-The blue graph in Figure~\ref{hung} represents the runtime of our HA implementation. The orange curve is a fitted $x^4$ function. As expected, the complexity of the algorithm is $O(n^{4})$. Even if it was mentioned in the before that it is possible to implement the Hungarian Algorithm in $O(n^{3})$, our experimants with the implementation that claimed to achieve $O(n^{3})$, did not prove to do it.
+The blue graph in Figure~\ref{hung} represents the runtime of our HA implementation. The orange curve is a fitted $x^4$ function. As expected, the complexity of the algorithm is $O(n^{4})$. Note that it is possible to implement the Hungarian Algorithm in $O(n^{3})$.
 
-The higher complexity compared to the other matching algorithms is because the Hungarian algorithm aims to assign the objects in such a way that the overall cost of all assignments is minimal, i.e. to find the optimal solution, whereas the others do not ensure it. This strong charasteristic of the solution again comes with its cost - the noticeably higher complexity.
+The higher complexity compared to the other matching algorithms is because the Hungarian algorithm aims to assign the objects in such a way that the overall cost of all assignments is minimal, i.e. to find the overall optimal solution.
 
 \subsubsection{Comparison of the Running Times}
-The results of the runtime experiment are provided in Table~\ref{runtimes}. It is clearly seen that because of its simplicity and the early exclusion of nonunique best matches, the Reverse Nearest Neighbour algorithm is the fastest one. The Global Greedy and the Stable Marriage algorithms are noticeably slower. One of the reasons is that the job they are performing differs a bit from the task the RNN is doing. GG and SM are making as many matches as possible, even when there are nonunique smallest distances. They both simply pick one of the possible matches. Moreover, GG and SM ensure the stable matching wi=hich comes with a cost. These two algorithms are comparable because of the stability of their solutions.
+The results of the runtime experiment are provided in Table~\ref{runtimes}. Our implementations are not optimal and hence it's hard to compare the absolute values. We still think that the implementations are good enough to allow for some basic deductions.
+
+It is clearly seen that because of its simplicity and the early exclusion of non-unique best matches, the Reverse Nearest Neighbour algorithm is the fastest one. The Global Greedy and the Stable Marriage algorithms are noticeable slower. One of the reasons is that the job they are performing differs a bit from the task the RNN is doing. GG and SM are making as many matches as possible, even when there are nonunique smallest distances. They both simply pick one of the possible matches. Moreover, GG and SM ensure the stable matching which comes with a cost. These two algorithms are comparable because of the stability of their solutions.
+
+The Hungarian Algorithm is by far the slowest, but since it's complexity is much higher we can not really compare it.
 
 \begin{table}[tbh]
 \centering
@@ -152,25 +160,25 @@ The results of the runtime experiment are provided in Table~\ref{runtimes}. It i
 Size & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 \hline 
 \hline 
- 100 & 1 & 63 &  & 269\tabularnewline
+ 100 & 1 & 63 & 20 & 269\tabularnewline
 \hline
- 200 & 2 & 159 &  & 640\tabularnewline
+ 200 & 2 & 159 & 40 & 640\tabularnewline
 \hline 
- 300 & 0 & 90 &  & 1826\tabularnewline
+ 300 & 0 & 90 & 90 & 1826\tabularnewline
 \hline 
- 400 & 0 & 368 & & 5243\tabularnewline
+ 400 & 0 & 368 & 190 & 5243\tabularnewline
 \hline 
- 500 & 2 & 235 &  & 11415\tabularnewline
+ 500 & 2 & 235 & 271 & 11415\tabularnewline
 \hline 
- 600 & 4 & 276 &  & 26197\tabularnewline
+ 600 & 4 & 276 & 412 & 26197\tabularnewline
 \hline 
- 700 & 5 & 440 &  & 43786\tabularnewline
+ 700 & 5 & 440 & 600 & 43786\tabularnewline
 \hline
- 800 & 8 & 961 &  & 85837\tabularnewline
+ 800 & 8 & 961 & 743 & 85837\tabularnewline
 \hline 
- 900 & 11 & 1269 &  & 135179\tabularnewline
+ 900 & 11 & 1269 & 1033 & 135179\tabularnewline
 \hline
- 1000 & 17 & 1673 &  & 217143\tabularnewline
+ 1000 & 17 & 1673 & 1265 & 217143\tabularnewline
 \hline 
 \end{tabular}
 \caption{Running times for different sizes.}
@@ -179,8 +187,13 @@ Size & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 
 \subsection{Quality Tests}
 
-The recall and precision values of all four algorithms for different datasets are provided in Table~\ref{recall} and Table~\ref{precision}. The interesting remark is that the recall values of GG, SM and Hungarian are very similar in all the cases. Recall values of GG and SM are even equal. % Discuss the reasons
-The reason for it might be the fact that both algorithms, GG and SM, aim to find the stabe solution. In our case, when the preferrences are acquired after ranking the distances, it is highly credible that the solutions are unique and therefore the same for both algorithms. Even though, we strogly believe in such a claim, we could not come up with a formal proof.
+The recall and precision values of all four algorithms for our different datasets\footnote{The datasets can be found here: \url{http://www.inf.unibz.it/dis/teaching/SS/} (Proposal 6)} are provided in Table~\ref{recall} and Table~\ref{precision}. 
+
+The first thing we notice is that RNN has the highest precision, but a lower recall. This can be explained since it only matches two items if the other item is the unique best choice. The decision is not influences by other matches, resulting in high precision but low recall values (matches are not made if the algorithm is "unsure").
+
+Another interesting observation is that the recall values of GG, SM and Hungarian are very similar in all the cases. Recall values of GG and SM are even equal. % Discuss the reasons
+
+The reason for this might be that both algorithms, GG and SM, aim to find the stable solution. Our tests showed that, when the rows and columns were unique, the solutions of both algorithms always matched. This could easily be true in general. One would need to prove that for our modification of the SM algorithm, once the ranking is done, the solution is unique. Even though we strongly believe this is the case, we did not have the time to find a prove.
 % Again, the discussion above is quite sloppy. Add something if you can think of.
 
 The other noticeable thing is that for all the algorithms except RNN, the recall value is equal to the precision value. Here the explanation is the nature of the algorithms: they always make $min(\#rows, \#columns)$ matches. Therefore the number of false positives becomes equal to the number of false negatives in the formulas of precision and recall. And thus, from the definitions of the precision and recall follows, that precision becomes equal to recall.
@@ -233,9 +246,9 @@ Data File & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 
 \section{Conclusions}
 
-To sum up, even if all four algorithms seem to perform a similar task, they a quite different. The stronger the claim about the solution the algorithm can ensure, the more it pays in complexity. The lowest compexity is acquired by the RRN, which does not guarantee neither the stability, nor the optimality of the solution. A slight increase in complexity is added with the guaranteed stability of the solution. This is acquired by the GG and SM algorithms, which are not only very similar in their complexity and speed, but also equal in the quality measures, such as recall and precision.
 
-The strongest guarantee of the matching is optimality of the solution. This is gained by the Hungarian algorithm which is the most sophisticated among the ones analysed in the project. Again, there is no such thing as free lunch. If you get more guarantees about the solution (in this case the optimality), you have to pay somehow (in this case $O(n^{4})$ complexity).
+
+While all algorithms perform a similar task, they are quite different. There are certain features an algorithm can guarantee, but it then pays in complexity. The lowest complexity is acquired by the RRN, which does not guarantee stability or the optimality of the solution. GG and SM have a slightly increased complexity and guarantee the stability of the solution. The most expensive feature is global optimality, which is guaranteed by the Hungarian Algorithm. We notice that an optimal solution generally is not a stable one.
 
 The experimental results regarding the quality measures suggest the following conclusions. First of all, the highest precision is acquired by the RNN algorithm. The reason is that it matches only if the match is unique and best. Therefore, it leaves out many possible, but not uniquely best matches. This results in the noticeably lower recall values.
 
