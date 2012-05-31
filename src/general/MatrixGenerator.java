@@ -96,4 +96,23 @@ public class MatrixGenerator {
 			System.err.println("Error: " + e.getMessage());
 		}
 	}
+
+	public static DataObj generateLog(int sizex, int sizey) {
+		double[][] matrix = new double[sizex][sizey];
+		String[] rowNames = new String[sizey];
+		String[] colNames = new String[sizex];
+		Random rnd = new Random();
+		for (int i = 0; i < sizex; i++) {
+			for (int j = 0; j < sizey; j++) {
+				matrix[i][j] = Math.max(0,Math.min(1,Math.log(rnd.nextDouble() + 1) / 2.0));
+			}
+		}
+		for (int i = 0; i < sizex; i++) {
+			colNames[i] = String.valueOf(i);
+		}
+		for (int i = 0; i < sizex; i++) {
+			rowNames[i] = String.valueOf(i);
+		}
+		return new DataObj(matrix, rowNames, colNames);
+	}
 }
