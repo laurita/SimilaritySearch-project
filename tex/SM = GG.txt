@@ -1,0 +1,8 @@
+Anzahl der Elemente einer Datenbank:
+(in beiden datenbanken n Elemente)
+
+Induktion über n:
+n=1 klar (weil nur ein mögliches matching)
+n + 1 -> n: wenn größter ähnlichkeitswert nicht gematched,
+dann widerspruch (also können wir das rausschmeißen)
+und betrachten n elemente

@@ -218,6 +218,7 @@ The first thing we notice is that RNN has the highest precision, but a lower rec
 Another interesting observation is that the recall values of GG, SM and Hungarian are very similar in all the cases. Recall values of GG and SM are even equal. % Discuss the reasons
 
 The reason for this might be that both algorithms, GG and SM, aim to find the stable solution. Our tests showed that, when the rows and columns were unique, the solutions of both algorithms always matched. This could easily be true in general. One would need to prove that for our modification of the SM algorithm, once the ranking is done, the solution is unique. Even though we strongly believe this is the case, we did not have the time to find a prove.
+\textbf{check and add proof, see txt file!}
 % Again, the discussion above is quite sloppy. Add something if you can think of.
 
 The other noticeable thing is that for all the algorithms except RNN, the recall value is equal to the precision value. Here the explanation is the nature of the algorithms: they always make $min(\#rows, \#columns)$ matches. Therefore the number of false positives becomes equal to the number of false negatives in the formulas of precision and recall. And thus, from the definitions of the precision and recall follows, that precision becomes equal to recall.
