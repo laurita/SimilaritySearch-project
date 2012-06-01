@@ -1,8 +1,9 @@
-Anzahl der Elemente einer Datenbank:
-(in beiden datenbanken n Elemente)
+Number of elemets in database:
+in both databases there are n elements
 
-Induktion über n:
-n=1 klar (weil nur ein mögliches matching)
-n + 1 -> n: wenn größter ähnlichkeitswert nicht gematched,
-dann widerspruch (also können wir das rausschmeißen)
-und betrachten n elemente
+induction over n:
+n=1, clear (since there is only one matching)
+n + 1 -> n: if largest similarity not matched, then
+contradiction to stability (hence we don't need 
+to consider the largest match). So we just look
+at the n elements.
