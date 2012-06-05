@@ -10,3 +10,4 @@ presentation/*.aux
 presentation/*.log
 presentation/*.gz
 presentation/*.pdf
+.DS_Store
