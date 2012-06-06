@@ -20,5 +20,7 @@ For n + 1 -> n:
 GG will first match elements with smallest distance
 For SM ranking, these two items are respectively the most preferred ones
 Hence they have to be matched in any stable matching
-This means there this match will be included in any SM and GG matching
+This means this match will be included in any SM and GG matching
 and we only need to consider the remaining n elements.
+
+For databases with different number of items, this proof can easily be adapted.
