@@ -7,3 +7,18 @@ n + 1 -> n: if largest similarity not matched, then
 contradiction to stability (hence we don't need 
 to consider the largest match). So we just look
 at the n elements.
+
+
+
+Assume two item sets with n elements
+Suppose the distance values are unique
+(If they are not define an ordering on the non-unique ones).
+
+Induction over number of elements in database
+For n = 1 this is clear since only one match possible, so GG = SM
+For n + 1 -> n: 
+GG will first match elements with smallest distance
+For SM ranking, these two items are respectively the most preferred ones
+Hence they have to be matched in any stable matching
+This means there this match will be included in any SM and GG matching
+and we only need to consider the remaining n elements.

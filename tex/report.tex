@@ -3,6 +3,7 @@
 %--------------------   start of the 'preamble'
 %
 \usepackage{graphicx,amssymb,amstext,amsmath}
+\usepackage{amsthm}
 \usepackage{url}
 %
 %%    homebrew commands -- to save typing
@@ -37,7 +38,7 @@ The differences of the matching algorithms are then discussed by performing runt
  
 % The comparison of algorithms include runtime and quality tests. In our runtime tests we use randomly generated distance data of different sizes, namely: 10, 100, 1000. In the quality tests, we use Bolzano Address Tree distance data and compute recall and precision for all the algorithms.
 
-\section{Problem definition}
+\section{Problem Definition}
 Matching items as described in the introduction is not a trivial task. There can be several items that are similar to a certain item. How do we select which one is "better"? Also matching one item to its best match might mean that other items can not be matched to their best match. Hence the matching has to be done carefully and their are a number of strategies.
 
 There are different features that one can try to satisfy when matching the items. We will discuss a selection of algorithms and the properties the generated solutions have. 
@@ -89,6 +90,29 @@ The basic idea is to assign the objects in such a way that the overall cost of a
 Our implementation, which runs in $O(N^4)$, is loosely based on the original algorithm and  \url{http://csclab.murraystate.edu/bob.pilgrim/445/munkres.html}. It is known that the algorithm can be implemented to run in $O(N^3)$, but for us the (well studied) original algorithm was sufficient. Further it is noticeable that we did not find a Java implementation that runs in $O(N^3)$. An existing Java implementations\footnote{\url{http://konstantinosnedas.com/dev/soft/munkres.htm}} that claimed to achieve $O(n^{3})$, showed that it was in fact running in $O(n^{4})$.
 
 The details of the algorithm are not described here. However the basic idea is to decrease the size of the entries in the cost matrix in an intelligent way. When the algorithm terminates, there is a marked zeros for every match. 
+
+\subsection{Proof: Global Greedy Equals Stable Marriage}
+
+During our tests we found that the quality measures of Stable Marriage and Global Greedy were
+always the same. While these algorithms produce different matchings in general, further testing showed
+that our implementation produces the same results for unique distances.
+
+\textbf{Proposition: Our implementation of the Stable Marriage and Global Greedy Algorithm always produce the same matching if the non-unique distances are ordered.}
+\begin{proof}
+Assume there are two item sets with n elements.
+Suppose the distance values are unique
+(if they are not define an ordering on the non-unique ones).
+
+We prove this by induction over the number of elements in database:
+For $n = 1$ this is clear, since only one match possible.
+For $n \rightarrow n + 1$: 
+GG will first match the two elements with the smallest distance.
+When generating the rankings for SM, these two items are respectively the most preferred ones.
+Hence they have to be matched in any stable matching.
+This means this match will be included in any SM and GG matching
+and we only need to consider the remaining n elements.
+\end{proof}
+For databases with different number of items, this proof can easily be adapted.
 
 \section{Implementation Testing}
 
@@ -217,9 +241,7 @@ The first thing we notice is that RNN has the highest precision, but a lower rec
 
 Another interesting observation is that the recall values of GG, SM and Hungarian are very similar in all the cases. Recall values of GG and SM are even equal. % Discuss the reasons
 
-The reason for this might be that both algorithms, GG and SM, aim to find the stable solution. Our tests showed that, when the rows and columns were unique, the solutions of both algorithms always matched. This could easily be true in general. One would need to prove that for our modification of the SM algorithm, once the ranking is done, the solution is unique. Even though we strongly believe this is the case, we did not have the time to find a prove.
-\textbf{check and add proof, see txt file!}
-% Again, the discussion above is quite sloppy. Add something if you can think of.
+We have shown that GG and SM will produce equal results if the matrix entries are unique. We did not check whether the matchings were identical. Since most non-unique values in the data files were ones, the algorithms might not "reach" them and this could well be the case.
 
 The other noticeable thing is that for all the algorithms except RNN, the recall value is equal to the precision value. Here the explanation is the nature of the algorithms: they always make $min(\#rows, \#columns)$ matches. Therefore the number of false positives becomes equal to the number of false negatives in the formulas of precision and recall. And thus, from the definitions of the precision and recall follows, that precision becomes equal to recall.
 

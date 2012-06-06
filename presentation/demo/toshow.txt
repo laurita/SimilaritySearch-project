@@ -1,0 +1,10 @@
+Preparation:
+- open input.txt
+- open paper
+
+
+To show:
+- mention different mode
+- run quality tests first, explain briefly results
+- run runtime tests: 100, 50, 5, ALL
+- show graphs in paper
