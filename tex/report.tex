@@ -48,7 +48,7 @@ There are different features that one can try to satisfy when matching the items
 \subsection{Reverse Nearest Neighbor (RNN)}
 
 The Reverse Nearest Neighbor algorithm is the only algorithm that does not match as many objects as possible.
-An object $A$ is only matched to object $B$ if the object $A$ is unique, most similar object to $B$ and vice versa. In other words the matrix entry for $AB$ is the unique, smallest entry in this row and column.
+An object $A$ is only matched to object $B$ if the object $A$ is the unique, most similar object to $B$ and vice versa. In other words the matrix entry for $AB$ is the unique, smallest entry in this row and column.
 
 The formalized details of the algorithm can be found in \cite[p. 29]{rnn}.
   
@@ -57,7 +57,7 @@ The formalized details of the algorithm can be found in \cite[p. 29]{rnn}.
 % string -> object
 The Global Greedy algorithm first sorts all possible matches ascending by similarity. It then iterates through the pairs and matches a pair if possible. A pair can be matched if there exists no other match using the same row or column.
 
-This algorithm matches as many strings as possible, i.e min(\#rows, \#columns). Therefore, it would match even very different strings, if there are no better matches left. The algorithm yields a stable matching, which is proven in \cite{augsten}.
+This algorithm matches as many items as possible, i.e min(\#rows, \#columns). Therefore, it would match even very different items, if there are no better matches left. The algorithm yields a stable matching, which is proven in \cite{augsten}.
 
 %The Global Greedy algorithm initially sorts the string pairs by their distance and stores them in an array. In the beginning the closest string pair is matched. The respective row and column are marked in the distance matrix to avoid a situation that a string is matched twice. The remaining string pairs in an array are matched in ascending order of their distances if both strings in the pair are still available. This algorithm matches as many strings as possible, i.e $min(\#rows, \#columns)$. Therefore, it would match even very different strings, if there are no better matches left. The algorithm yields a stable matching, which is proven in \cite{augsten}.
 
@@ -68,7 +68,7 @@ The Global Greedy matching algorithm requires $O(N^2)$ space (the size of the di
 % string -> object
 The Stable Marriage algorithm was first presented in \cite{gale}. One of the application examples was the assignments of students to the colleges given a quota for each college and the preferential rankings of both sides. The special case of a problem, when there is the same number of students and colleges and all the quotas are unity was explained as a situation when the equal number of men and women seek for a partner based on their ranking lists.
 
-The latter case is readily applicable for the string matching problem. The difference is that for matching strings the input is a distance matrix. Therefore, to use the algorithm the row-wise and column-wise rankings of the distances have to be calculated (the smaller the distance, the better the ranking).
+The latter case is readily applicable for the item matching problem. The difference is that for matching items the input is a distance matrix. Therefore, to use the algorithm the row-wise and column-wise rankings of the distances have to be calculated (the smaller the distance, the better the ranking).
 
 Further, the algorithm is identical to the original stable marriage. Suppose, that there are less columns than rows in the distance matrix. If not, then transpose the distance matrix and follow the same procedure. Also, imagine that rows represent boys, and columns represent girls. To start, each boy finds its best ranked girl. Each girl who receives more than one proposal rejects all but her favorite from among those who have proposed to her. However, she does not accept him yet, but keeps him on a string to allow for the possibility that someone better may come along later.
 
@@ -91,7 +91,7 @@ Our implementation, which runs in $O(N^4)$, is loosely based on the original alg
 
 The details of the algorithm are not described here. However the basic idea is to decrease the size of the entries in the cost matrix in an intelligent way. When the algorithm terminates, there are marked zeros for every match. 
 
-\subsection{Proof: Global Greedy Equals Stable Marriage}
+\subsection{Proof: Global Greedy Equals Stable Marriage\label{proofggsm}}
 
 During our tests we found that the quality measures of Stable Marriage and Global Greedy were
 always the same. While these algorithms produce different matchings in general, further testing showed
@@ -104,12 +104,12 @@ Suppose the distance values are unique
 (if they are not, define an ordering on the non-unique ones).
 
 We prove this by induction over the number of elements in database:
-For $n = 1$ this is clear, since only one match possible.
+For $n = 1$ this is clear, since only one match is possible.
 For $n \rightarrow n + 1$: 
 GG will first match the two elements with the smallest distance.
 When generating the rankings for SM, these two items are respectively the most preferred ones.
 Hence they have to be matched in any stable matching.
-It means that this match will be included in any SM and GG matching
+This means that this match will be included in any SM and GG matching
 and we only need to consider the remaining $n$ elements.
 \end{proof}
 For databases with different number of items, this proof can easily be adapted.
@@ -128,7 +128,7 @@ For the HA we compared our result score against the score of a different impleme
 
 \section{Experiments}
 
-The comparison of the algorithms includes runtime and quality tests. In our runtime tests we use randomly generated distance matrices of increasing size. In the quality tests, we use Bolzano Address Tree distance data and compute recall and precision for all four algorithms.
+The comparison of the algorithms includes runtime and quality tests. In our runtime tests we use randomly generated distance matrices of increasing size. In the quality tests, we use the Bolzano Address Tree distance data and compute recall and precision for all four algorithms.
 
 \subsection{Runtime Tests}
 
@@ -185,10 +185,10 @@ The blue graph in Figure~\ref{hung} represents the runtime of our HA implementat
 The higher complexity compared to the other matching algorithms is because the Hungarian algorithm aims to assign the objects in such a way that the overall cost of all assignments is minimal, i.e. to find the overall optimal solution.
 
 \subsubsection{Comparison of the Running Times}
-The results of the runtime experiment are provided in Table~\ref{runtimes}. Our implementations are not optimal and hence it's hard to compare the absolute values. We still think that the implementations are good enough to allow for some basic deductions.
+The results of the runtime experiment up to $n=1000$ are provided in Table~\ref{runtimes}. Our implementations are not optimal and hence it's hard to compare the absolute values. We still think that the implementations are good enough to allow for some basic deductions.
 
 
-It is clearly seen that because of its simplicity and the early exclusion of non-unique best matches, the Reverse Nearest Neighbor algorithm is the fastest one. The Global Greedy and the Stable Marriage algorithms are noticeably slower. One of the reasons is that their job differs a bit from the one RNN is doing. GG and SM are making as many matches as possible, even when there are non-unique smallest distances. They both simply pick one of the possible matches. Moreover, GG and SM ensure stable matching which comes with a cost. These two algorithms are comparable because of the stability of their solutions.
+It is clearly seen that because of its simplicity and the early exclusion of non-unique best matches, the Reverse Nearest Neighbor algorithm is the fastest one. The Global Greedy and the Stable Marriage algorithms are noticeably slower. One of the reasons is that their job differs a bit from the one RNN is doing. GG and SM are making as many matches as possible, even when there are non-unique smallest distances. They both simply pick one of the possible matches. Moreover, GG and SM ensure stable matching which comes with a cost. These two algorithms are comparable because they produce the same solution under certain assumptions (\ref{proofggsm}).
 
 The Hungarian Algorithm is by far the slowest, but since it's complexity is much higher we can not really compare it.
 
@@ -241,7 +241,7 @@ The first thing we noticed is that RNN has the highest precision, but a lower re
 
 Another interesting observation is that the recall values of GG, SM and Hungarian are very similar in all the cases. Recall values of GG and SM are even equal. % Discuss the reasons
 
-We have shown that GG and SM will produce equal results if the matrix entries are unique. We did not check whether the matchings were identical. Since most non-unique values in the data files were ones, the algorithms might not "reach" them and this could well be the case.
+We have shown that GG and SM will produce equal results if the matrix entries are unique, but we did not check whether the matchings were identical in our case. Since most non-unique values in the data files are ones, the algorithms might not "reach" them and this could well be the case.
 
 The other noticeable thing is that for all the algorithms except RNN, the recall value is equal to the precision value. Here the explanation lies in the nature of the algorithms: they always make $min(\#rows, \#columns)$ matches. Therefore the number of false positives becomes equal to the number of false negatives in the formulas of precision and recall. And thus, from the definitions of the precision and recall follows, that precision becomes equal to recall.
 
@@ -313,7 +313,7 @@ Data File & RNN & Global Greedy & Stable Marriage & Hungarian \tabularnewline
 
 \section{Conclusions}
 
-While all algorithms perform a similar task, they are quite different. There are certain features an algorithm can guarantee, but it then pays in complexity. The lowest complexity is acquired by the RRN, which does not guarantee neither stability nor the optimality of the solution. GG and SM have a slightly increased complexity and guarantee the stability of the solution. The most expensive feature is global optimality, which is guaranteed by the Hungarian Algorithm. We notice that an optimal solution is not necessarily a stable one.
+While all algorithms perform a similar task, they are quite different. There are certain features an algorithm can guarantee, but it then pays in complexity. The lowest complexity is acquired by the RNN, which does guarantee neither stability nor the optimality of the solution. GG and SM have a slightly increased complexity and guarantee the stability of the solution. The most expensive feature is global optimality, which is guaranteed by the Hungarian Algorithm. We notice that an optimal solution is not necessarily a stable one.
 
 In general we can say that the RNN is very good if you want to "be sure" about the matches you make. The other algorithms should be used if you want to make as many matches as possible. Our testing suggests that the quality measures of the HA are slightly better than GG (or SM). However this is not always the case as \textit{Nw8p2q.dm} shows. In most cases the difference will not justify the \textit{much} higher complexity. 
 
@@ -327,7 +327,7 @@ There are three different modes: "Quality" check, "Runtime" check and "Verify".
 
 When you select the quality check you can load matrices of your choice into the program and all algorithms will run on the data, giving you recall, precision and F-1 measure results. The format for the data should be the same as for the provided test-files (e.g. "Nw8p2q.dm").
 
-The runtime check lets you test the runtime of a selection (or all) of the discussed algorithms. You can select the starting size $n$ of a $n$x$n$ matrix, the step-size by which to increase this $n$ and the amount of steps to perform. Be careful not to choose the amount of steps too high. The matrices are generated using random double values in [0,1].
+The runtime check lets you test the runtime of a selection (or all) of the discussed algorithms. You can select the starting size $n$ of a $n$x$n$ matrix, the step-size by which to increase this $n$ and the amount of steps to perform. Be careful not to choose the amount of steps too high, as this will result in memory exceptions and very long run times. The matrices are generated using random double values in [0,1].
 
 If you choose to "verify", the program will perform all our implementation checks as discussed in the section "Implementation Testing". As long as you don't change the program, you should not see any errors.
 
